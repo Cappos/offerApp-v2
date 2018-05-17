@@ -1,0 +1,11 @@
+mat-card {
+    margin-top: 250px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.error h4 {
+    color: #cd433d;
+}

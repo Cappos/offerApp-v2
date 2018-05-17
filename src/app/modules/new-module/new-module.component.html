@@ -1,0 +1,69 @@
+<mat-card>
+    <mat-card-title>
+        <div layout="row" layout-wrap>
+            <div flex="90" layout="column" layout-align="center start">New module</div>
+            <div flex="10" layout="column" layout-align="center end">
+                <button mat-mini-fab (click)="onSave(f)" color="primary" [disabled]="!f.valid">
+                    <mat-icon>done</mat-icon>
+                </button>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <form #f="ngForm">
+            <div layout="row" layout-wrap>
+                <div style="margin-top:20px;" flex="50" layout-padding>
+                    <mat-input-container style="width: 100%; max-width: 700px;">
+                        <input matInput placeholder="Name" ngModel name="name" required>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="20" layout-padding>
+                    <mat-input-container>
+                        <mat-select placeholder="Category" floatPlaceholder="auto" ngModel name="categoryId">
+                            <mat-option *ngFor="let category of categories" [value]="category.value">
+                                {{category.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="25" layout-padding layout-align="center start" layout="column">
+                    <mat-checkbox ngModel name="signed">Included</mat-checkbox>
+                </div>
+                <div style="margin-top:20px;" flex="15" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="Price" [ngModel]="totalPrice | number:'3.2'" name="price" readonly>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="15" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="Internal hours" [ngModel]="0" name="internalHours" required>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="15" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="External hours" [ngModel]="0" name="externalHours" required>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="15" layout-padding>
+                    <mat-input-container>
+                        <mat-select placeholder="Price list" floatPlaceholder="auto" [ngModel]="selectedPrice"
+                                    name="selectedPrice">
+                            <mat-option [value]="selectedPrice">
+                                {{selectedPrice}}
+                            </mat-option>
+                            <mat-option *ngFor="let price of prices" [value]="price.value">
+                                {{price.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-input-container>
+                </div>
+
+                <div style="margin-top:20px;" flex="100" layout-padding>
+                    <app-tiny-editor [elementId]="'rte'" [editMode]="editMode" [rteData]="rteData"
+                                     (onEditorContentChange)="keyupHandler($event)"></app-tiny-editor>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

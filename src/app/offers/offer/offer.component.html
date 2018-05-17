@@ -1,0 +1,568 @@
+<ng-template [ngIf]="item">
+
+    <mat-card>
+        <mat-card-title>
+            <div layout="row" layout-wrap>
+                <div flex="5">
+                    <button mat-icon-button (click)="goBack()" color="accent">
+                        <mat-icon>keyboard_backspace</mat-icon>
+                    </button>
+                </div>
+                <div flex="85" layout="column" layout-align="center start">{{[item.offerNumber]}}</div>
+                <div flex="5" layout="column" layout-align="center end">
+                    <button mat-mini-fab color="primary" [matMenuTriggerFor]="pdfMenu" [disabled]="!f.valid">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                    <mat-menu #pdfMenu="matMenu">
+                        <!--<button mat-menu-item (click)="onPrint(item, offersModules,  1)">-->
+                            <!--<mat-icon>picture_as_pdf</mat-icon>-->
+                            <!--<span>Template one</span>-->
+                        <!--</button>-->
+                        <button mat-menu-item (click)="onPrint(item, offersModules,  2)">
+                            <mat-icon>picture_as_pdf</mat-icon>
+                            <span>Generate PDF</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div flex="5" layout="column" layout-align="center center">
+                    <button mat-mini-fab (click)="onEdit()" *ngIf="!editMode">
+                        <mat-icon>mode_edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="onSave(f)" *ngIf="editMode" color="primary" [disabled]="!f.valid">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>id: {{item._id}}</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <form #f="ngForm">
+                <div layout="row" layout-wrap>
+                    <div flex="100" layout-padding>
+                        <h3 style="margin: 0;">Info data</h3>
+                    </div>
+                    <div style="margin-top:20px;" flex="45" layout-padding>
+                        <mat-input-container style="max-width: 800px; width: 100%;">
+                            <input matInput placeholder="Title" [ngModel]="item.offerTitle"
+                                   name="offerTitle" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <mat-select placeholder="Client" floatPlaceholder="auto" [(ngModel)]="selectedClient"
+                                        name="client" [disabled]="!editMode">
+                                <mat-option *ngFor="let client of clients" [value]="client._id"
+                                            (click)="onSelectChange(client._id)">
+                                    {{client.companyName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <mat-select placeholder="Contact person" floatPlaceholder="auto"
+                                        [(ngModel)]="selectedContactPersons"
+                                        name="person" [disabled]="!editMode" multiple>
+                                <mat-option *ngFor="let contact of selectedClientContacts" [value]="contact._id">
+                                    {{contact.contactPerson}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <mat-select placeholder="Seller" floatPlaceholder="auto" [(ngModel)]="selectedSeller"
+                                        name="seller" [disabled]="!editMode">
+                                <mat-option *ngFor="let seller of sellers" [value]="seller.value">
+                                    {{seller.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="10" layout="column" layout-padding layout-align="center start">
+                        <mat-checkbox [ngModel]="item.signed" name="signed" [disabled]="!editMode">Signed</mat-checkbox>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Included price" [ngModel]="signedPrice | number:'2.2-2':'en-US'"
+                                   name="signedPrice" readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Total price" [ngModel]="totalPrice | number:'2.2-2':'en-US'"
+                                   name="totalPrice" readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Internal hours" [ngModel]="internalHours" name="internalHours"
+                                   readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Extrnal hours" [ngModel]="externalHours" name="externalHours"
+                                   readonly>
+                        </mat-input-container>
+                    </div>
+
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="pickerNew" placeholder="Created date" [(ngModel)]="newDate"
+                                   name="tstamp" required [readonly]="!editMode">
+                            <mat-datepicker-toggle matSuffix [for]="pickerNew"
+                                                   [disabled]="!editMode"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerNew></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Expire date" [(ngModel)]="expDate"
+                                   name="expDate" required [readonly]="!editMode">
+                            <mat-datepicker-toggle matSuffix [for]="picker"
+                                                   [disabled]="!editMode"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!-- PAGES AND CHAPTERS START -->
+
+                    <div flex="100" layout-padding>
+                        <mat-divider></mat-divider>
+                        <h3 style="margin-bottom: 0;">Pages & Chapters</h3>
+                    </div>
+
+                    <div style="margin-top:20px;" flex="100" layout-padding>
+                        <mat-accordion [dragula]='dragContainer' [dragulaModel]='offersModules'>
+                            <ng-container *ngFor="let group of offersModules; let i = index" ngSwitch="{{group.type}}">
+
+                                <!-- PAGES -->
+                                <div *ngSwitchCase="'2'" layout="row" class="page">
+                                    <mat-expansion-panel #accordionModule hideToggle="true" flex="85" layout="column"
+                                                         layout-align="center start" [attr.id]="group._id"
+                                                         [attr.index]="i">
+                                        <mat-expansion-panel-header layout="row">
+                                            <mat-panel-title flex="100">
+                                                <span layout="column" flex="5" layout-align="center start">
+                                                    <mat-icon class="grey">description</mat-icon>
+                                                </span>
+                                                <h4 layout="column" flex="95" layout-align="center start">
+                                                    {{group.title}}</h4>
+                                            </mat-panel-title>
+                                            <mat-icon>arrow_drop_down</mat-icon>
+                                        </mat-expansion-panel-header>
+                                        <mat-card>
+                                            <mat-card-content>
+                                                <form #group._id="ngForm">
+                                                    <div layout="row" layout-wrap>
+                                                        <div style="margin-top:20px;" flex="100" layout-padding>
+                                                            <mat-input-container style="width: 100%;">
+                                                                <input matInput placeholder="Title"
+                                                                       [ngModel]="group.title"
+                                                                       name="group.title" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div style="margin-top:20px;" flex="100" layout-padding>
+                                                            <mat-input-container style="width: 100%;">
+                                                                <input matInput placeholder="Subtitle"
+                                                                       [ngModel]="group.subtitle"
+                                                                       name="group.subtitle" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="100" layout-padding>
+                                                            <h3 style="margin-top: 0;">Content</h3>
+                                                            <div [innerHTML]="group.bodytext | safeHtml"></div>
+                                                        </div>
+                                                        <div flex="100" layout-padding>
+                                                            <div class="img-placeholder"
+                                                                 *ngFor="let file of group.files;">
+                                                                <div class="img-wrapper">
+                                                                    <a style="cursor: pointer"
+                                                                       (click)="lightbox(file.path, file.originalname)">
+                                                                        <img src="{{file.path}}">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="description">
+                                                                    <h4>
+                                                                        <a style="cursor: pointer"
+                                                                           (click)="lightbox(file.path, file.originalname)">{{file.originalname}}</a>
+
+                                                                        <button inlist mat-icon-button
+                                                                                (click)="onDeleteFile(file.filename)">
+                                                                            <mat-icon color="warn">close</mat-icon>
+                                                                        </button>
+                                                                    </h4>
+                                                                    <p>{{file.tstamp | date: 'dd.MM.y'}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </mat-card-content>
+                                        </mat-card>
+
+                                    </mat-expansion-panel>
+                                    <div flex="15" layout-align="start end" layout="column">
+                                        <div layout="row">
+                                        <span layout-margin>
+                                            <a (click)="onPageEdit(group._id, group)"><mat-icon
+                                                    color="accent">mode_edit</mat-icon></a>
+                                        </span>
+                                            <span layout-margin>
+                                            <a (click)="onPageRemove(group._id, item._id)"><mat-icon
+                                                    color="warn">delete</mat-icon></a>
+                                       </span>
+                                            <ng-template [ngIf]="editMode">
+                                                <span layout-margin><mat-icon
+                                                        class="handle">drag_handler</mat-icon></span>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CHAPTERS -->
+                                <div *ngSwitchCase="'1'" layout="row">
+                                    <mat-expansion-panel #accordionModule hideToggle="true" flex="85" layout="column"
+                                                         layout-align="center start" [attr.id]="group._id"
+                                                         [attr.index]="i">
+                                        <mat-expansion-panel-header layout="row">
+                                            <mat-panel-title flex="70">
+                                                 <span layout="column" flex="5" layout-align="center start">
+                                                    <mat-icon class="grey">storage</mat-icon>
+                                                </span>
+                                                <h4 layout="column" flex="95" layout-align="center start">
+                                                    {{group.name}}</h4>
+                                            </mat-panel-title>
+                                            <mat-panel-description flex="15">
+                                                <span>Chapter price: &nbsp;<b>{{group.subTotal | number:'2.2-2':'en-US'}}</b></span>
+                                            </mat-panel-description>
+                                            <mat-panel-description flex="15">
+                                                <span>Included price: &nbsp;<b>{{group.total | number:'2.2-2':'en-US'}}</b></span>
+                                            </mat-panel-description>
+                                            <mat-icon>arrow_drop_down</mat-icon>
+                                        </mat-expansion-panel-header>
+                                        <div flex="100" layout-padding layout="row">
+                                            <h3 style="margin-top: 0;">Modules</h3>
+                                        </div>
+                                        <mat-card *ngFor="let module of group.modules">
+                                            <mat-card-content>
+                                                <form #group._id="ngForm">
+                                                    <div layout="row" layout-wrap>
+                                                        <div style="margin-top:20px;" flex="40" layout-padding>
+                                                            <mat-input-container style="max-width: 560px; width: 100%;">
+                                                                <input matInput placeholder="Name"
+                                                                       [ngModel]="module.name"
+                                                                       name="name" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="20" layout-padding style="margin-top:20px;">
+                                                            <mat-input-container style="width: 80%;">
+                                                                <input matInput placeholder="Group"
+                                                                       [ngModel]="module.categoryId[0]?.name"
+                                                                       name="groupUid" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="20" layout-padding style="margin-top:20px;">
+                                                            <mat-input-container>
+                                                                <input matInput placeholder="Created date"
+                                                                       [ngModel]="module.tstamp | date: 'dd.MM.y'"
+                                                                       name="tstamp" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div style="margin-top:20px;" flex="10" layout-padding
+                                                             layout-align="center start" layout="column">
+                                                            <mat-checkbox [ngModel]="module.signed" name="signed"
+                                                                          disabled>Included
+                                                            </mat-checkbox>
+                                                        </div>
+
+                                                        <div flex="5" layout="column" layout-align="center end">
+                                                            <button mat-mini-fab color="primary"
+                                                                    (click)="onModuleEdit(module._id, group._id, module)">
+                                                                <mat-icon>mode_edit</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                        <div flex="5" layout="column" layout-align="center center">
+                                                            <button mat-mini-fab color="warn"
+                                                                    (click)="onModuleRemove(module._id, group._id)">
+                                                                <mat-icon>remove</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                        <div flex="20" layout-padding>
+                                                            <mat-input-container>
+                                                                <input matInput placeholder="Price"
+                                                                       [ngModel]="module.price | number:'2.2-2':'en-US'"
+                                                                       name="price" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="20" layout-padding>
+                                                            <mat-input-container>
+                                                                <input matInput placeholder="Internal hours"
+                                                                       [ngModel]="module.internalHours"
+                                                                       name="internalHours" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="20" layout-padding>
+                                                            <mat-input-container>
+                                                                <input matInput placeholder="External hours"
+                                                                       [ngModel]="module.externalHours"
+                                                                       name="externalHours" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+                                                        <div flex="20" layout-padding>
+                                                            <mat-input-container>
+                                                                <input matInput placeholder="Price per hour"
+                                                                       [ngModel]="module.pricePerHour"
+                                                                       name="pricePerHour" readonly>
+                                                            </mat-input-container>
+                                                        </div>
+
+                                                        <div style="margin-top:20px;" flex="100" layout-padding>
+                                                            <h3 style="margin-top: 0;">Description</h3>
+
+                                                            <div [innerHTML]="module.bodytext"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div style="margin-top:20px;" flex="100" layout-padding>
+                                                    </div>
+                                                </form>
+                                            </mat-card-content>
+                                        </mat-card>
+                                        <div flex="25" layout-padding style="margin:20px 0;">
+                                            <button mat-raised-button color="primary" [matMenuTriggerFor]="moduleMenu">
+                                                Add
+                                                module
+                                            </button>
+                                            <mat-menu #moduleMenu="matMenu">
+                                                <button mat-menu-item (click)="addFromModuleList(group._id)">
+                                                    <mat-icon>playlist_add</mat-icon>
+                                                    <span>Select from list</span>
+                                                </button>
+                                                <button mat-menu-item (click)="addModule(group._id)">
+                                                    <mat-icon>add</mat-icon>
+                                                    <span>Add new</span>
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                    </mat-expansion-panel>
+                                    <div flex="15" layout-align="start end" layout="column">
+                                        <div layout="row">
+                                        <span layout-margin>
+                                            <mat-checkbox [ngModel]="group.summary" name="summary{{i}}"
+                                                          [disabled]="!editMode"
+                                                          (change)="toggleSummary($event, group._id)">
+                                                </mat-checkbox>
+                                        </span>
+                                            <span layout-margin>
+                                            <a (click)="onChapterEdit(group._id, group)"><mat-icon
+                                                    color="accent">mode_edit</mat-icon></a>
+                                        </span>
+                                            <span layout-margin>
+                                            <a (click)="onChapterRemove(group._id)"><mat-icon
+                                                    color="warn">delete</mat-icon></a>
+                                       </span>
+                                            <ng-template [ngIf]="editMode">
+                                                <span layout-margin><mat-icon
+                                                        class="handle">drag_handler</mat-icon></span>
+                                            </ng-template>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- PAGES CHAPTERS END -->
+
+                            </ng-container>
+                        </mat-accordion>
+
+                        <div flex="25" layout-padding style="margin:20px 0;">
+                            <button mat-raised-button color="primary" [matMenuTriggerFor]="chapterMenu" color="primary">
+                                Add
+                            </button>
+                            <mat-menu #chapterMenu="matMenu">
+                                <button mat-menu-item (click)="addFromPagesList(item._id)">
+                                    <mat-icon>playlist_add</mat-icon>
+                                    <span>Select page from list</span>
+                                </button>
+                                <button mat-menu-item [matMenuTriggerFor]="pageMenu">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Create new page</span>
+                                </button>
+                                <mat-menu #pageMenu="matMenu">
+                                    <button mat-menu-item (click)="addPage(item._id, 1)">
+                                        <span>New text image</span>
+                                    </button>
+                                    <button mat-menu-item (click)="addPage(item._id, 2)">
+                                        <span>New image text</span>
+                                    </button>
+                                    <button mat-menu-item (click)="addPage(item._id, 3)">
+                                        <span>New image image</span>
+                                    </button>
+                                </mat-menu>
+                                <button mat-menu-item (click)="addFromChapterList(item._id)">
+                                    <mat-icon>playlist_add</mat-icon>
+                                    <span>Select chapter from list</span>
+                                </button>
+                                <button mat-menu-item (click)="addChapter(item._id)">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Create new chapter</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <!-- PAGES AND CHAPTERS END -->
+
+                    <!-- COMMENTS START -->
+                    <div flex="100" layout-padding>
+                        <mat-divider></mat-divider>
+                        <h3 style="margin-bottom: 0;">Remarks</h3>
+                    </div>
+                    <div style="margin-top:20px;" flex="100" layout="row" layout-wrap>
+                        <div flex="90">
+                            <mat-card>
+                                <mat-card-content>
+                                    <div flex="100" layout-padding>
+                                        <div [innerHTML]="rteData"></div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div flex="10" layout-align="start center" layout="column">
+                            <div layout="row">
+                                 <span layout-margin>
+                                     <a (click)="onRemarksEdit(rteData)" style="cursor:pointer;">
+                                         <mat-icon color="accent">mode_edit</mat-icon>
+                                     </a>
+                                 </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- COMMENTS END -->
+
+
+                    <!-- TIMELINE START -->
+                    <div flex="100" layout-padding>
+                        <mat-divider></mat-divider>
+                        <h3 style="margin-bottom: 0;">Timeline</h3>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding layout-align="center start">
+                        <mat-input-container>
+                            <input matInput placeholder="Number of weeks" [ngModel]="timeline.week" name="week"
+                                   (change)="addWeek($event)">
+                        </mat-input-container>
+                    </div>
+
+                    <div flex="10" layout="column" layout-align="center start">
+                        <button mat-raised-button (click)="addTask()" [disabled]="!timeline.week">
+                            <mat-icon>add</mat-icon>
+                            Add task
+                        </button>
+                    </div>
+
+                    <div flex="90" layout="column">
+                        <div class="timeline-table" *ngIf="timeline.week">
+                            <div class="headers-wrapper">
+                                <div class="headers">
+                                    <div class="spacer">
+                                        Tasks list
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div #weekWidth class="weeks"  [style.width.%]="90 / week.length" *ngFor="let item of week; let i = index">
+                                        {{i + 1}}
+                                    </div>
+                                    <div class="weeks"></div>
+                                </div>
+                            </div>
+
+                            <div class="dataRow" *ngFor="let task of timeline.tasks; let i = index">
+                                <div class="headers" >
+                                    <div #tasks class="tasks">
+                                        {{task.title}}
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div #weekWidth class="weeks"  [style.width.%]="90 / week.length" *ngFor="let item of week; let i = index">
+                                        <div class="timeline" *ngIf="i + 1 >= task.start && i + 1 <= task.end"></div>
+                                    </div>
+                                    <div class="weeks">
+                                        <div layout="row" layout-align="center">
+                                            <span>
+                                            <a (click)="editTask(task)">
+                                                <mat-icon color="accent">mode_edit</mat-icon>
+                                            </a>
+                                            </span>
+                                            <span>
+                                                <a (click)="removeTask(task.id)">
+                                                    <mat-icon color="warn">delete</mat-icon>
+                                                </a>
+                                           </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIMELINE END -->
+
+
+                    <!-- FILES START -->
+                    <div flex="100" layout-padding>
+                        <mat-divider></mat-divider>
+                        <h3 style="margin-bottom: 0;">Related files</h3>
+                    </div>
+                    <div style="margin:20px 0;" flex="100" layout-padding>
+                        <td-file-upload #fileUpload defaultColor="accent" activeColor="warn" cancelColor="primary"
+                                        (select)="selectEvent($event)"
+                                        (upload)="uploadEvent($event)" (cancel)="cancelEvent()" [disabled]="disabled">
+                            <mat-icon>file_upload</mat-icon>
+                            <span>{{ fileUpload.files?.name }}</span>
+                            <ng-template td-file-input-label>
+                                <mat-icon>attach_file</mat-icon>
+                                <span>Choose a file...</span>
+                            </ng-template>
+                        </td-file-upload>
+                    </div>
+                    <div flex="100" layout-padding>
+                        <mat-list>
+                            <div *ngFor="let file of files;">
+                                <mat-list-item *ngIf="!file.deleted">
+
+                                    <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+                                    <h4 mat-line>
+                                        <a href="{{file.path}}" target="_blank" style="cursor: pointer"
+                                           *ngIf="file.mimetype == 'application/pdf'; else other_content">{{file.originalname}}</a>
+                                        <button inlist mat-icon-button *ngIf="file.mimetype == 'application/pdf'"
+                                                (click)="onDeleteFile(file.filename)">
+                                            <mat-icon color="warn">close</mat-icon>
+                                        </button>
+
+                                        <ng-template #other_content>
+                                            <a style="cursor: pointer" (click)="lightbox(file.path, file.originalname)">{{file.originalname}}</a>
+
+                                            <button inlist mat-icon-button (click)="onDeleteFile(file.filename)">
+                                                <mat-icon color="warn">close</mat-icon>
+                                            </button>
+                                        </ng-template>
+
+                                    </h4>
+                                    <p mat-line> {{file.tstamp | date: 'dd.MM.y'}} </p>
+                                </mat-list-item>
+                            </div>
+                        </mat-list>
+                    </div>
+                    <!-- FILES END -->
+
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+

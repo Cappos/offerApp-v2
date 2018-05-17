@@ -1,0 +1,57 @@
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+  <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+    <span class="mat-title">{{title}}</span>
+  </span>
+    <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+     </span>
+    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
+                   (searchDebounce)="search($event)" flex>
+    </td-search-box>
+</div>
+<mat-divider></mat-divider>
+<table td-data-table #dataTable>
+    <th td-data-table-column [sortable]="true" [sortOrder]="sortOrder" *ngFor="let column of columns"
+        (sortChange)="sort($event, column.name)">
+        {{column.label}}
+    </th>
+    <tbody>
+    <tr td-data-table-row *ngFor="let row of filteredData; let i = index">
+        <td td-data-table-cell >
+            <mat-checkbox (change)="toggleEditable($event, row._id)" [checked]="isChecked(row._id)"></mat-checkbox>
+        </td>
+        <td td-data-table-cell >
+            {{i +1}}
+        </td>
+        <td td-data-table-cell>
+            <button mat-menu-item>{{row.name | shorten: 40: '...'}}</button>
+        </td>
+        <td td-data-table-cell>
+            <div [innerHTML]="row.bodytext | shorten: 40: '...'"></div>
+        </td>
+        <td td-data-table-cell>
+            {{row.categoryId[0].name}}
+        </td>
+        <td td-data-table-cell>
+            {{row.price | number:'3.2'}}
+        </td>
+        <td td-data-table-cell>
+            {{row.tstamp | date: 'dd.MM.y'}}
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="mat-padding" *ngIf="!filteredData" layout="row" layout-align="center center">
+    <h3>No results to display.</h3>
+</div>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="page($event)">
+    <span hide-xs>Rows per page:</span>
+    <mat-select [style.width.px]="50" [(ngModel)]="pageSize">
+        <mat-option *ngFor="let size of [5,10,15,20]" [value]="size">
+            {{size}}
+        </mat-option>
+    </mat-select>
+    {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+</td-paging-bar>
+<div flex="100" style="margin-top: 20px;" layout="column" layout-align="center end">
+    <button mat-raised-button (click)="addModule()" color="primary">Add</button>
+</div>

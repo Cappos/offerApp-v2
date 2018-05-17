@@ -1,0 +1,113 @@
+<mat-card>
+    <mat-card-title>
+        <div layout="row" layout-wrap>
+            <div flex="90" layout="column" layout-align="center start">New Client</div>
+            <div flex="10" layout="column" layout-align="center end">
+                <button mat-mini-fab (click)="onSave(f)" [disabled]= "!f.valid" color="primary">
+                    <mat-icon>done</mat-icon>
+                </button>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <form #f="ngForm">
+            <div layout="row" layout-wrap>
+                <div flex="100" layout-padding>
+                    <h3 style="margin: 0;">Info data</h3>
+                </div>
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="Company name" ngModel name="companyName" required>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="Address" ngModel name="address" required>
+                    </mat-input-container>
+                </div>
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                    <mat-input-container>
+                        <input matInput placeholder="Web site" ngModel name="webSite">
+                    </mat-input-container>
+                </div>
+
+                <div flex="100" layout-padding>
+                    <mat-divider></mat-divider>
+                    <h3 style="margin-bottom: 0;">Contact persons</h3>
+                </div>
+                <div flex="100" layout-padding>
+                    <mat-accordion>
+
+                        <mat-list>
+                            <ng-template let-item let-last="last" ngFor [ngForOf]="persons">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-icon mdListAvatar>person</mat-icon>
+                                        <mat-list-item>
+                                            <h3 mat-line> {{item.contactPerson}} </h3>
+                                        </mat-list-item>
+                                    </mat-expansion-panel-header>
+                                    <form #fc="ngForm">
+                                        <div layout="row" layout-wrap>
+                                            <div flex="100" layout-padding>
+                                                <div layout="row">
+                                                    <div flex="85">
+                                                        <h3 style="margin: 0;">Info data</h3>
+                                                    </div>
+                                                    <div flex="10" layout="row" layout-align="end center">
+                                                        <button mat-mini-fab (click)="onPersonEdit()" *ngIf="!editMode">
+                                                            <mat-icon>mode_edit</mat-icon>
+                                                        </button>
+                                                        <button mat-mini-fab (click)="onPersonSave(fc, item._id)" *ngIf="editMode" color="primary">
+                                                            <mat-icon>done</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                    <div flex="5" layout="row" layout-align="center center">
+                                                        <button mat-mini-fab color="warn"
+                                                                (click)="onPersonDelete(item._id)">
+                                                            <mat-icon>delete</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top:20px;" flex="25" layout-padding>
+                                                <input type="hidden" [ngModel]="item._id" name="_id" readonly>
+                                                <mat-input-container>
+                                                    <input matInput placeholder="Position" [ngModel]="item.contactPerson" name="contactPerson"  [readonly]="!editMode">
+                                                </mat-input-container>
+                                            </div>
+                                            <div style="margin-top:20px;" flex="25" layout-padding>
+                                                <mat-input-container>
+                                                    <input matInput placeholder="E-mail" [ngModel]="item.mail" name="mail" required
+                                                           [readonly]="!editMode">
+                                                </mat-input-container>
+                                            </div>
+
+                                            <div style="margin-top:20px;" flex="25" layout-padding>
+                                                <mat-input-container>
+                                                    <input matInput placeholder="Phone" [ngModel]="item.contactPhone" name="contactPhone" required
+                                                           [readonly]="!editMode">
+                                                </mat-input-container>
+                                            </div>
+
+                                            <div style="margin-top:20px;" flex="25" layout-padding>
+                                                <mat-input-container>
+                                                    <input matInput placeholder="Mobile" [ngModel]="item.mobile" name="mobile"
+                                                           [readonly]="!editMode">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </mat-expansion-panel>
+                            </ng-template>
+                        </mat-list>
+                    </mat-accordion>
+                </div>
+                <div flex="25" layout-padding>
+                    <button mat-raised-button (click)="addContact()">Add person</button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

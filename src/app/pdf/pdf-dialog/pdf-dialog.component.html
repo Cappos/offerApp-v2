@@ -1,0 +1,472 @@
+<div layout="row" layout-wrap>
+    <div flex="90" layout="column" layout-align="center start"></div>
+    <div flex="5" layout="column" layout-align="center end">
+        <button mat-mini-fab (click)="generatePDF()" color="primary">
+            <mat-icon>print</mat-icon>
+        </button>
+    </div>
+    <div flex="5" layout="column" layout-align="center center">
+        <button mat-mini-fab color="accent" mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>
+<!-- TEMPLATES -->
+
+<!--<div #pdfContainerOne [class.hidden]="pdfType !=1">-->
+<!--<section id="contentOne" class="pdf-container template-one">-->
+<!--<div class="scale-wrapper">-->
+<!--<div class="section-top">-->
+<!--<div class="logo">-->
+<!--<img src="assets/images/deepscreen_logo.png">-->
+<!--</div>-->
+<!--<div class="line1">-->
+<!--<img src="assets/images/lines_one.png">-->
+<!--</div>-->
+<!--<div class="section-title">-->
+<!--<h1 class="main-title">{{offerData.offerTitle}}</h1>-->
+<!--<br/>-->
+<!--<h2>Wir lösen Ihre Business Challenges.</h2>-->
+<!--</div>-->
+<!--<div class="line2">-->
+<!--<img src="assets/images/lines_two.jpg">-->
+<!--</div>-->
+<!--<div class="offer-info-container">-->
+<!--<div class="offer-info">-->
+<!--<h4>Offerte:</h4>-->
+<!--<p>Referenz-Nr.:{{offerData.offerNumber}}</p>-->
+<!--<p>Dokumenttype: Offerte</p>-->
+<!--<p>Datum: {{offerData.tstamp | date: 'dd.MM.y'}}</p>-->
+<!--</div>-->
+<!--<div class="offer-info">-->
+<!--<h4>Verantwortliche Person:</h4>-->
+<!--<p>Deepscreen GmbH</p>-->
+<!--<p>{{offerData.sealer[0].name}}</p>-->
+<!--<p>Tel. {{offerData.sealer[0].phone}}</p>-->
+<!--<p>Mob. {{offerData.sealer[0].mobile}}</p>-->
+<!--<p>{{offerData.sealer[0].mail}}</p>-->
+<!--</div>-->
+<!--<div class="offer-info">-->
+<!--<h4>Empfänger:</h4>-->
+<!--<p>{{offerData.client[0].companyName}}</p>-->
+<!--<p *ngIf="offerData.client[0].contactPhone">Tel. {{offerData.client[0].contactPhone}}</p>-->
+<!--<p *ngIf="offerData.client[0].mobile">Mob. {{offerData.client[0].mobile}}</p>-->
+<!--<p *ngIf="offerData.client[0].mail">{{offerData.client[0].mail}}</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="section-top-bottom">-->
+<!--<p>Dieses Dokument ist vertraulich und ausschliesslich für den unten angegebenen Empfänger-->
+<!--bestimmt.Kein-->
+<!--Bestandteil dieser Dokumentation darf in irgendeiner Form, weder elektronisch noch mechanisch,-->
+<!--zu-->
+<!--irgendwelchen Zwecken vervielfältigt werden. Diese Dokumentation ist urheberrechtlich geschützt-->
+<!--und-->
+<!--darf nicht an unautorisierte Dritte weitergegeben werden.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<ng-container *ngFor="let group of offerGroups; let last = last; let i = index" ngSwitch="{{group.type}}">-->
+
+<!--&lt;!&ndash; PAGES &ndash;&gt;-->
+<!--<div *ngSwitchCase="'2'">-->
+<!--<div class="page-wrapper">-->
+<!--<div class="line3">-->
+<!--<img src="assets/images/lines_three.png">-->
+<!--</div>-->
+<!--<div class="content-wrapper">-->
+
+<!--<h2 *ngIf="group.title?.length > 0">{{group.title}}</h2>-->
+<!--<h3 *ngIf="group.subtitle?.length > 0">{{group.subtitle}}</h3>-->
+
+<!--<ng-template [ngIf]="group.pageType == 2">-->
+<!--<div class="img-wrapper" *ngFor="let file of group.files">-->
+<!--<img src="{{file.path | stringReplace}}">-->
+<!--</div>-->
+<!--</ng-template>-->
+
+<!--<ng-template [ngIf]="group.pageType != 3">-->
+<!--<div class="group-info">-->
+<!--<div [innerHTML]="group.bodytext"></div>-->
+<!--</div>-->
+<!--</ng-template>-->
+
+<!--<ng-template [ngIf]="group.pageType != 2">-->
+<!--<div class="img-wrapper" *ngFor="let file of group.files">-->
+<!--<img src="{{file.path | stringReplace}}">-->
+<!--</div>-->
+<!--</ng-template>-->
+
+<!--<div class="remarks" *ngIf="last">-->
+<!--<div class="bemerkungen">-->
+<!--<div [innerHTML]="offerData.comments"></div>-->
+<!--</div>-->
+<!--<div id="pageFooter-{{offerGroups.length + 1 }}" class="footer">-->
+<!--<table class="manager-table">-->
+<!--<tbody>-->
+<!--<tr class="manager">-->
+<!--<th>-->
+<!--<h4>{{offerData.sealer[0].name}}</h4>-->
+<!--</th>-->
+<!--<th>-->
+<!--<h4 class="manager-date">Unterschrift Kunde</h4>-->
+<!--</th>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td colspan="2" class="auftrag">-->
+<!--<p>Zürich,{{group.tstamp | date: 'dd.MM.y'}}</p>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; CHAPTERS &ndash;&gt;-->
+<!--<div *ngSwitchCase="'1'">-->
+<!--<div class="page-wrapper">-->
+<!--<div #pageHeight class="content-wrapper">-->
+<!--<h2>{{group.name}}</h2>-->
+<!--<div class="modules" [class.hasHeader]="module.name"-->
+<!--*ngFor="let module of group.modules; let first = first">-->
+<!--<table style="border-collapse: collapse; width: 100%;" border="0">-->
+<!--<tbody>-->
+
+<!--<tr class="modules-header" *ngIf="module.name">-->
+<!--<th class="first-td">-->
+<!--<h4>{{module.name}}</h4>-->
+<!--</th>-->
+<!--<th class="second-td">-->
+<!--<h4 *ngIf="first">Betrag</h4>-->
+<!--</th>-->
+<!--<th class="third-td">-->
+<!--<h4 *ngIf="first">Enthalten</h4>-->
+<!--</th>-->
+
+<!--</tr>-->
+<!--<tr class="modules-main">-->
+<!--<td class="first-td">-->
+<!--<div [innerHTML]="module.bodytext"></div>-->
+<!--</td>-->
+<!--<td class="second-td">-->
+<!--<p class="module-price">{{module.price | number:'2.2-2'}}</p>-->
+<!--</td>-->
+<!--<td class="img-shape third-td">-->
+<!--<img src="assets/images/box.png" *ngIf="!module.signed">-->
+<!--<img src="assets/images/checked.png" *ngIf="module.signed">-->
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--<ng-template [ngIf]="group.summary">-->
+<!--<table class="total-table">-->
+<!--<tbody>-->
+<!--<tr class="total">-->
+<!--<th>-->
+<!--<h4>Total</h4>-->
+<!--</th>-->
+<!--<th>-->
+<!--<h4 class="right">{{group.subTotal | number:'2.2-2'}}</h4>-->
+<!--</th>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--<div class="remarks">-->
+<!--<div class="bemerkungen">-->
+<!--<div [innerHTML]="offerData.comments"></div>-->
+<!--</div>-->
+<!--&lt;!&ndash;<div id="pageFooter-{{i + 2 }}" class="footer">&ndash;&gt;-->
+<!--&lt;!&ndash;<table class="manager-table">&ndash;&gt;-->
+<!--&lt;!&ndash;<tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;<tr class="manager">&ndash;&gt;-->
+<!--&lt;!&ndash;<th>&ndash;&gt;-->
+<!--&lt;!&ndash;<h4>{{offerData.sealer[0].name}}</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;</th>&ndash;&gt;-->
+<!--&lt;!&ndash;<th>&ndash;&gt;-->
+<!--&lt;!&ndash;<h4 class="manager-date">Unterschrift Kunde</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;</th>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<td colspan="2" class="auftrag">&ndash;&gt;-->
+<!--&lt;!&ndash;<p>Zürich,{{group.tstamp | date: 'dd.MM.y'}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;</td>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--&lt;!&ndash;</tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;</table>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--<div class="footer1">-->
+<!--<table class="manager-table">-->
+<!--<tbody>-->
+<!--<tr class="manager">-->
+<!--<th>-->
+<!--<h4>{{offerData.sealer[0].name}}</h4>-->
+<!--</th>-->
+<!--<th>-->
+<!--<h4 class="manager-date">Unterschrift Kunde</h4>-->
+<!--</th>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td colspan="2" class="auftrag">-->
+<!--<p>Zürich,{{group.tstamp | date: 'dd.MM.y'}}</p>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--</div>-->
+<!--</ng-template>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; PAGES CHAPTERS END &ndash;&gt;-->
+<!--</ng-container>-->
+<!--</div>-->
+<!--</section>-->
+<!--</div>-->
+
+
+<div #pdfContainerTwo [class.hidden]="pdfType !=2">
+    <section id="contentTwo" class="pdf-container template-two">
+        <div class="pdf-logo">
+            <img src="assets/images/pdf_logo.svg">
+        </div>
+        <div class="scale-wrapper">
+            <div class="section-top">
+                <div class="section-title">
+                    <h1 class="main-title">{{offerData.offerTitle}}</h1>
+                    <br/>
+                    <h2>Wir lösen Ihre Business Challenges.</h2>
+                </div>
+                <div class="offer-data">
+                    <h4>Offerte:</h4>
+                    <p><span class="label">Referenz-Nr.:</span>{{offerData.offerNumber}}</p>
+                    <p><span class="label">Dokumenttyp:</span>Offerte</p>
+                    <p><span class="label">Datum:</span>{{signDate | date: 'dd.MM.y'}}</p>
+                    <p *ngIf="offerData.version"><span class="label">Version:</span><span>{{offerData.version | number:'1.1-1'}}</span></p>
+                </div>
+
+                <div class="section-top-bottom">
+                    <p>Dieses Dokument ist vertraulich und ausschliesslich für den unten angegebenen Empfänger
+                        bestimmt. Kein Bestandteil dieser Dokumentation darf in irgendeiner Form, weder elektronisch
+                        noch mechanisch, zu
+                        irgendwelchen Zwecken vervielfältigt werden. Diese Dokumentation ist urheberrechtlich geschützt
+                        und darf nicht an unautorisierte Dritte weitergegeben werden.
+                    </p>
+                </div>
+
+                <div class="offer-info-container">
+                    <div class="offer-info">
+                        <h4 class="blueText">Verantwortliche Person:</h4>
+                        <p>deepscreen GmbH</p>
+                        <p>{{offerData.sealer[0].title}} {{offerData.sealer[0].name}}</p>
+                        <p>Tel. {{offerData.sealer[0].phone}}</p>
+                        <p>Mob. {{offerData.sealer[0].mobile}}</p>
+                        <p>{{offerData.sealer[0].email}}</p>
+                    </div>
+                    <div class="offer-info" *ngFor="let person of contactPersons">
+                        <h4 class="blueText">Empfänger:</h4>
+                        <p>{{offerData.client[0].companyName}}</p>
+                        <p *ngIf="person.contactPerson">{{person.contactPerson}}</p>
+                        <p *ngIf="person.contactPhone">Tel. {{person.contactPhone}}</p>
+                        <p *ngIf="person.mobile">Mob. {{person.mobile}}</p>
+                        <p *ngIf="person.mail">{{person.mail}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngFor="let group of offerGroups; let last = last; let i = index" ngSwitch="{{group.type}}">
+
+                <!-- PAGES -->
+                <div *ngSwitchCase="'2'">
+                    <div class="page-wrapper" [class.line-one]="i == 0" [class.line-two]="i == 1">
+                        <div class="content-wrapper" [class.chapters]="last" [class.bg-image]="i <= 1">
+                            <h2 *ngIf="group.title?.length > 0">{{group.title}}</h2>
+                            <h3 *ngIf="group.subtitle?.length > 0">{{group.subtitle}}</h3>
+
+                            <ng-template [ngIf]="group.legal && timeline?.week">
+                                <div class="timeline-wrapper">
+                                    <div class="timeline-table" *ngIf="timeline?.week">
+                                        <div class="headers-wrapper">
+                                            <div class="headers">
+                                                <div class="spacer">
+                                                    Tasks list
+                                                </div>
+                                            </div>
+                                            <div class="columns">
+                                                <div #weekWidth class="weeks" [style.width.%]="100 / week.length"
+                                                     *ngFor="let item of week; let i = index">
+                                                    {{i + 1}}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="dataRow" *ngFor="let task of timeline.tasks; let i = index">
+                                            <div class="headers">
+                                                <div #tasks class="tasks">
+                                                    {{task.title}}
+                                                </div>
+                                            </div>
+                                            <div class="columns">
+                                                <div #weekWidth class="weeks" [style.width.%]="100 / week.length"
+                                                     *ngFor="let item of week; let i = index">
+                                                    <div class="timeline"
+                                                         *ngIf="i + 1 >= task.start && i + 1 <= task.end"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template [ngIf]="group.pageType == 2">
+                                <div class="img-wrapper before-text" *ngFor="let file of group.files">
+                                    <img src="{{file.path | stringReplace}}">
+                                </div>
+                            </ng-template>
+
+                            <ng-template [ngIf]="group.pageType != 3">
+                                <div class="group-info">
+                                    <div [innerHTML]="group.bodytext | safeHtml"></div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template [ngIf]="group.pageType != 2">
+                                <div class="img-wrapper after-text" *ngFor="let file of group.files">
+                                    <img src="{{file.path | stringReplace}}">
+                                </div>
+                            </ng-template>
+
+                            <div class="remarks" *ngIf="last">
+                                <div class="bemerkungen">
+                                    <div [innerHTML]="offerData.comments | safeHtml"></div>
+                                </div>
+
+                            </div>
+                            <div class="footer" *ngIf="last">
+                                <table class="manager-table">
+                                    <tbody>
+                                    <tr class="manager">
+                                        <th>
+                                            <div class="signature"></div>
+                                            <h4>{{offerData.sealer[0].name}}</h4>
+                                            <p>{{offerData.sealer[0].position}}</p>
+                                        </th>
+                                        <th>
+                                            <div class="signature align-right"></div>
+                                            <h4 class="manager-date">Auftrag erteilt, Datum, Stempel, Unterschrift</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="auftrag">
+                                            <p>Zürich,{{signDate | date: 'dd.MM.y'}}</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTERS -->
+                <div *ngSwitchCase="'1'">
+                    <div class="page-wrapper">
+                        <div #pageHeight class="content-wrapper chapters">
+                            <h2>{{group.name}}</h2>
+                            <div class="modules" [class.hasHeader]="module.name"
+                                 *ngFor="let module of group.modules; let first = first">
+                                <table style="border-collapse: collapse; width: 100%;" border="0">
+                                    <tbody>
+
+                                    <tr class="modules-header" *ngIf="module.name">
+                                        <th class="first-td">
+                                            <h4>{{module.name}}</h4>
+                                        </th>
+                                        <th class="second-td">
+                                            <h4 *ngIf="first">Betrag</h4>
+                                        </th>
+                                        <th class="third-td">
+                                            <h4 *ngIf="first">Enthalten</h4>
+                                        </th>
+
+                                    </tr>
+                                    <tr class="modules-main">
+                                        <td class="first-td">
+                                            <div [innerHTML]="module.bodytext | safeHtml"></div>
+                                        </td>
+                                        <td class="second-td">
+                                            <p class="module-price" *ngIf="module.price != 0">{{module.price | number:'2.0'}}.-</p>
+                                            <p class="module-price" *ngIf="module.price === 0">Enthalten</p>
+                                        </td>
+                                        <td class="img-shape third-td">
+                                            <img src="assets/images/box.svg" *ngIf="!module.signed">
+                                            <img src="assets/images/checked.svg" *ngIf="module.signed">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template [ngIf]="group.summary">
+                                <table class="total-table">
+                                    <tbody>
+                                    <tr class="total">
+                                        <th>
+                                            <h4>Total</h4>
+                                        </th>
+                                        <th>
+                                            <h4 class="right">{{group.subTotal | number:'2.0'}}.-</h4>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="remarks">
+                                    <div class="bemerkungen" *ngIf="last">
+                                        <div [innerHTML]="offerData.comments | safeHtml"></div>
+                                    </div>
+                                    <div class="footer">
+                                        <table class="manager-table">
+                                            <tbody>
+                                            <tr class="manager">
+                                                <th>
+                                                    <div class="signature"></div>
+                                                    <h4>{{offerData.sealer[0].name}}</h4>
+                                                    <p>{{offerData.sealer[0].position}}</p>
+                                                </th>
+                                                <th>
+                                                    <div class="signature align-right"></div>
+                                                    <h4 class="manager-date">Auftrag erteilt, Datum, Stempel, Unterschrift</h4>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="auftrag">
+                                                    <p>Zürich,{{signDate | date: 'dd.MM.y'}}</p>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <!-- PAGES CHAPTERS END -->
+            </ng-container>
+
+        </div>
+        <div class="info-page">
+            <div class="line-footer">
+                <img src="assets/images/footer.svg">
+            </div>
+            <div class="custom-footer">
+                <p>deepscreen GmbH • Binzmühlestrasse 97 • CH-8050 Zürich<br>T: +41 43 255 68 68 • F: +41 43 255 65 94 •
+                    info@deepscreen.ch<br>www.deepscreen.ch</p>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,18 @@
+.mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+td-file-upload {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.clicked {
+    background-color: rgba(115, 115, 115, 0.12)!important;
+}
+.mat-dialog-content {
+    min-width: 950px;
+}
+.button-row {
+
+}

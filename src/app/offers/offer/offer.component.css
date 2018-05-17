@@ -1,0 +1,79 @@
+mat-select {
+    max-width: 200px;
+    width: 100%;
+    /*padding-top: 16px !important;*/
+}
+.mat-select-trigger {
+    height: 23px !important;
+    display: block ;
+    font-size: 16px;
+
+}
+
+.mat-select-placeholder {
+    margin-top: -5px !important;
+}
+
+.mat-select-underline {
+    display: block !important;
+    position: absolute;
+    bottom: 0 ;
+    left: 0 ;
+    right: 0 ;
+    height: 1px !important;
+}
+
+.mat-select-underline {
+    background-color: rgba(0, 0, 0, 0.42) !important;
+}
+
+.mat-select-value {
+    font-size: 16px !important;
+}
+
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
+    flex-basis: 0;
+}
+
+.mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}
+
+app-pdf {
+    /*display: none;*/
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+}
+
+
+
+:host ::ng-deep .mat-expansion-panel-body {
+    background: #f3f3f3;
+
+}
+:host ::ng-deep .page .mat-expansion-panel-body {
+    padding-top: 16px;
+
+}
+
+:host ::ng-deep .mat-expansion-panel-body h3 {
+    margin-top: 16px !important;
+}
+
+:host ::ng-deep .page table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    border: none;
+}
+
+:host ::ng-deep .page table td {
+    border: none;
+    padding: 0 10px;
+}
+
+
+

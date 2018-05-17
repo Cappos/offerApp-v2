@@ -1,0 +1,35 @@
+<div layout="row" layout-wrap layout-align="start center">
+    <div flex="60">
+        <h1 mat-dialog-title>New Task</h1>
+    </div>
+    <div flex="40" layout="column" layout-align="center end">
+        <div class="button-row" style="display: flex; align-items: flex-end; justify-content: flex-end; width: 230px;">
+            <button mat-raised-button (click)="onSave(f)" [disabled]="!f.valid">
+                <mat-icon mat-list-icon>done</mat-icon>
+                <span *ngIf="!edit"> Add</span>
+                <span *ngIf="edit"> Save</span>
+            </button>
+        </div>
+    </div>
+</div>
+<mat-card-content>
+    <form #f="ngForm">
+        <div layout="row" layout-wrap>
+            <div style="margin-top:20px;" flex="33" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="Title" [ngModel]="timelineItem.title" name="title" required>
+                </mat-input-container>
+            </div>
+            <div style="margin-top:20px;" flex="33" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="Start" [ngModel]="timelineItem.start" name="start" required>
+                </mat-input-container>
+            </div>
+            <div style="margin-top:20px;" flex="33" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="End" [ngModel]="timelineItem.end" name="end" required>
+                </mat-input-container>
+            </div>
+        </div>
+    </form>
+</mat-card-content>

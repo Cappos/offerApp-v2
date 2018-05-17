@@ -1,0 +1,156 @@
+<div layout="row" layout-wrap layout-padding>
+    <div flex="100">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title style="margin-bottom: 0;">
+                    <h1 color="accent">Welcome to My Offers App <br>
+                        <span class="small">Easy web Offers Management System</span>
+                    </h1>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div layout="row" layout-wrap>
+                    <div flex="100" layout-padding>
+                        <h3>This is a brief description of the available modules.</h3>
+                    </div>
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>view_stream</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                               <a matLine routerLink="chapters">Chapters</a>
+                            </span>
+                        </div>
+
+                        <p>In this section you can create default chapters. The chapter can consists of one or more
+                            modules</p>
+                    </div>
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>view_module</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                                 <a matLine routerLink="modules">Modules</a>
+                            </span>
+                        </div>
+
+                        <p>Here you can create the default modules. You can determine their working hours, price per
+                            hour and description</p>
+                    </div>
+
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>text_fields</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                               <a matLine routerLink="additionalData">Pages</a>
+                            </span>
+                        </div>
+
+                        <p>This is the place where you can create the default content pages for the offers.</p>
+                    </div>
+
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>subtitles</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                              <a matLine routerLink="offers">Offers</a>
+                            </span>
+                        </div>
+
+                        <p>This is the heart of the application. A place where you create offer. The offer can consists
+                            general information, chapters, files and content pages</p>
+                    </div>
+
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>work</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                              <a matLine routerLink="clients">Clients</a>
+                            </span>
+                        </div>
+
+                        <p>Here you can view and create customers and see all the offers related to them</p>
+                    </div>
+
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>group</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                              <a matLine routerLink="sellers">Sellers</a>
+                            </span>
+                        </div>
+
+                        <p>The place where sellers information is entered and managed</p>
+                    </div>
+
+                    <div flex="25" layout-padding class="shortcut-links">
+                        <div layout="row" layout-wrap>
+                            <span flex="10" layout="column" layout-align="center start">
+                                 <mat-icon>attach_money</mat-icon>
+                            </span>
+                            <span flex="90" layout="column" layout-align="center start">
+                            <a matLine routerLink="prices">Price per hour</a>
+                            </span>
+                        </div>
+
+                        <p>Add prices for hours worked here</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div flex="100">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title style="margin-bottom: 0;">
+                    <h2 style="margin-bottom: 0;">Last offers</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content flex="100" layout="row">
+                <mat-list layout="row" layout-wrap>
+                    <ng-container *ngFor="let offer of offersData; let i = index">
+                        <mat-list-item layout="column" flex="25">
+                            <mat-icon mat-list-icon>subtitles</mat-icon>
+                            <h3 mat-line (click)="selectOffer(offer._id)" style="cursor: pointer">
+                                {{offer.offerNumber}}</h3>
+                            <h4 mat-line>{{offer.offerTitle}}</h4>
+                            <p mat-line> {{offer.tstamp | date: 'dd.MM.y'}} </p>
+                        </mat-list-item>
+                    </ng-container>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div flex="100">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title style="margin-bottom: 0;">
+                    <h2 style="margin-bottom: 0;">Last Clients</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content flex="100" layout="row">
+                <mat-list>
+                    <ng-container *ngFor="let client of clientsData; let i = index">
+                        <mat-list-item class="clients">
+                            <mat-icon mat-list-icon>work</mat-icon>
+                            <h4 mat-line (click)="selectClient(client._id)" style="cursor: pointer">
+                                {{client.companyName}}</h4>
+                            <p mat-line> {{client.tstamp | date: 'dd.MM.y'}} </p>
+                        </mat-list-item>
+                    </ng-container>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

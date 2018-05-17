@@ -1,0 +1,74 @@
+<mat-card>
+    <mat-card-content>
+        <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+  <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+              </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item routerLink="/newModule">
+                    <mat-icon>add</mat-icon>
+                    <span>Add new</span>
+                  </button>
+                </mat-menu>
+    <span class="mat-title">{{title}}</span>
+  </span>
+            <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+     </span>
+            <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
+                           (searchDebounce)="search($event)" flex>
+            </td-search-box>
+        </div>
+        <mat-divider></mat-divider>
+        <!-- TODO Promenit covalent tabelu na material tabelu -->
+        <table td-data-table #dataTable>
+
+            <th td-data-table-column [sortable]="true" [sortOrder]="sortOrder" *ngFor="let column of columns"
+                (sortChange)="sort($event, column.name)">
+                {{column.label}}
+            </th>
+            <tbody>
+
+            <tr td-data-table-row *ngFor="let row of filteredData | orderBy: '-tstamp'; let i = index">
+                <td td-data-table-cell>
+                    {{i +1}}
+                </td>
+                <td td-data-table-cell>
+                    <button mat-menu-item (click)="onSelect(row._id)">{{row.name}}</button>
+                </td>
+                <td td-data-table-cell>
+                    <div [innerHTML]="row.bodytext | shorten: 60: '...'"></div>
+                </td>
+                <td td-data-table-cell>
+                    {{row.categoryId[0].name}}
+                </td>
+                <td td-data-table-cell>
+                    {{row.price | number:'3.2'}}
+                </td>
+                <td td-data-table-cell>
+                    {{row.tstamp | date: 'dd.MM.y'}}
+                </td>
+                <td td-data-table-cell colspan="2">
+                    <div layout="row">
+                        <span layout-margin><a (click)="onEdit(row)"><mat-icon color="accent">mode_edit</mat-icon></a></span>
+                        <span layout-margin><a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a></span>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="mat-padding" *ngIf="!filteredData" layout="row" layout-align="center center">
+            <h3>No results to display.</h3>
+        </div>
+        <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="page($event)">
+            <span hide-xs>Rows per page:</span>
+            <mat-select [style.width.px]="50" [(ngModel)]="pageSize">
+                <mat-option *ngFor="let size of [5,10,15,20]" [value]="size">
+                    {{size}}
+                </mat-option>
+            </mat-select>
+            {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+        </td-paging-bar>
+    </mat-card-content>
+</mat-card>

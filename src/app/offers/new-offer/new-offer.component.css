@@ -1,0 +1,19 @@
+
+:host ::ng-deep .mat-expansion-panel-body {
+    background: #f3f3f3;
+
+}
+:host ::ng-deep .page .mat-expansion-panel-body {
+    padding-top: 16px;
+
+}
+
+:host ::ng-deep .mat-expansion-panel-body h3 {
+    margin-top: 16px !important;
+}
+
+:host ::ng-deep .page table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}

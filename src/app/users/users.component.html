@@ -1,0 +1,79 @@
+<mat-card>
+  <mat-card-content>
+    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+         <span class="push-left-sm">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+              </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="newUser()" >
+                    <mat-icon>add</mat-icon>
+                    <span>Add new</span>
+                  </button>
+                </mat-menu>
+    <span class="mat-title">{{title}}</span>
+         </span>
+    </div>
+    <mat-accordion>
+
+      <mat-list>
+        <ng-template let-item let-last="last" ngFor [ngForOf]="data">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-icon mdListAvatar>person</mat-icon>
+              <mat-list-item>
+                <h3 mat-line> {{item.username}} </h3>
+              </mat-list-item>
+            </mat-expansion-panel-header>
+            <form #f="ngForm">
+              <div layout="row" layout-wrap>
+                <div flex="100" layout-padding>
+                  <div layout="row">
+                    <div flex="85">
+                      <h3 style="margin: 0;">Info data</h3>
+                    </div>
+                    <div flex="10" layout="row" layout-align="end center">
+                      <button mat-mini-fab (click)="onEdit()" *ngIf="!editMode">
+                        <mat-icon>mode_edit</mat-icon>
+                      </button>
+                      <button mat-mini-fab (click)="onSave(f, item.username, item._id)" *ngIf="editMode" color="primary">
+                        <mat-icon>done</mat-icon>
+                      </button>
+                    </div>
+                    <div flex="5" layout="row" layout-align="center center">
+                      <button mat-mini-fab color="warn"
+                              (click)="onDelete(item._id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                  <mat-input-container>
+                    <input matInput placeholder="E-mail" [ngModel]="item.email" name="email" required
+                           [readonly]="!editMode">
+                  </mat-input-container>
+                </div>
+
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                  <mat-input-container>
+                    <input matInput placeholder="Username" [ngModel]="item.username" name="username" required
+                           [readonly]="!editMode">
+                  </mat-input-container>
+                </div>
+
+                <div style="margin-top:20px;" flex="25" layout-padding>
+                  <mat-input-container>
+                    <input matInput  type="password" placeholder="Password" [ngModel]="item.password" name="password"
+                           required
+                           [readonly]="!editMode">
+                  </mat-input-container>
+                </div>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </ng-template>
+      </mat-list>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,13 @@
+th {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.mat-button-wrapper {
+    display: block;
+    text-align: right;
+}
+
+.mat-button-wrapper mat-icon {
+    cursor: pointer;
+}

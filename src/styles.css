@@ -1,0 +1,156 @@
+/* You can add global styles to this file, and also import other style files */
+.mat-expansion-panel-header .mat-content {
+    align-items: center;
+}
+
+.mat-dialog-container {
+    max-height: 95vh !important;
+}
+
+
+.td-route-animation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.handle {
+    cursor: pointer;
+}
+
+.gu-transit .mat-expansion-panel-header:not([aria-disabled='true']).cdk-keyboard-focused,
+.gu-transit .mat-expansion-panel-header:not([aria-disabled='true']).cdk-program-focused,
+.gu-transit .mat-expansion-panel-header:not([aria-disabled='true']),
+tr.gu-transit{
+    background: rgba(0, 0, 0, 0.04);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.mat-nav-list .mat-list-item .mat-list-text {
+    height: 100% !important;
+}
+.mat-nav-list .mat-list-item .mat-list-text > * {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.small {
+    font-size: 18px;
+    font-weight: 300;
+    color: #999;
+}
+
+.img-placeholder {
+    margin-bottom: 25px;
+}
+
+.img-placeholder .img-wrapper {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 150px;
+
+}
+.img-placeholder .description {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 14px;
+}
+
+.img-placeholder h4 {
+    margin: 0;
+}
+
+
+.timeline-table {
+    display: table;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.headers {
+    display: table-cell;
+    vertical-align: top;
+    width: 28%;
+    border: 1px solid #f3f3f3;
+    line-height: 30px;
+    padding-left: 15px;
+}
+
+.columns {
+    display: table;
+    vertical-align: top;
+    width:100%;
+    border: 1px solid #f3f3f3;
+    border-left: none;
+    border-bottom: none;
+
+}
+.weeks {
+    display: table-cell;
+    vertical-align: top;
+    height: 30px;
+    border-right: 1px solid #f3f3f3;
+}
+
+.weeks a {
+    display: inline-block;
+    margin-top: 2px;
+    margin-right: 5px;
+}
+
+.dataRow, .headers-wrapper {
+    display: table-row;
+}
+.dataRow:last-child .columns {
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.headers-wrapper .weeks {
+    min-height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+/*.headers-wrapper {*/
+    /*border: 1px solid #f3f3f3;*/
+    /*border-right: none;*/
+/*}*/
+.headers-wrapper .headers {
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.headers-wrapper .weeks:nth-child(odd) {
+    background: #f3f3f3;
+}
+
+.tasks {
+    font-size: 14px;
+}
+
+.timeline {
+    height: 3px;
+    background: #039be5;
+    margin-top: 15px;
+}
+
+

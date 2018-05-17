@@ -1,0 +1,43 @@
+<div layout="row" layout-wrap layout-align="start center">
+    <div flex="60">
+        <h1 mat-dialog-title>New Contact</h1>
+    </div>
+    <div flex="40" layout="column" layout-align="center end">
+        <div class="button-row" style="display: flex; align-items: flex-end; justify-content: flex-end; width: 230px;">
+            <button mat-raised-button (click)="onSave(f)" [disabled]="!f.valid">
+                <mat-icon mat-list-icon>done</mat-icon>
+                <span> Add</span>
+            </button>
+        </div>
+    </div>
+</div>
+<mat-card-content>
+    <form #f="ngForm">
+        <div layout="row" layout-wrap>
+            <div flex="100" layout-padding>
+                <h3 style="margin: 0;">Person data</h3>
+            </div>
+            <div style="margin-top:20px;" flex="25" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="Contact person" ngModel name="contactPerson" required>
+                </mat-input-container>
+            </div>
+            <div style="margin-top:20px;" flex="25" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="Contact phone" ngModel name="contactPhone" required>
+                </mat-input-container>
+            </div>
+            <div style="margin-top:20px;" flex="25" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="Mobile phone" ngModel name="mobile">
+                </mat-input-container>
+            </div>
+
+            <div style="margin-top:20px;" flex="25" layout-padding>
+                <mat-input-container>
+                    <input matInput placeholder="E-mail" ngModel name="mail" required>
+                </mat-input-container>
+            </div>
+        </div>
+    </form>
+</mat-card-content>

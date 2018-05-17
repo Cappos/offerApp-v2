@@ -1,0 +1,86 @@
+<mat-card>
+    <mat-card-title>
+        <div layout="row" layout-wrap>
+            <div flex="100" layout="column" layout-align="center start">{{title}}</div>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <mat-tab-group dynamicHeight="true" #tabGroup (selectChange)="onSelectChange($event)"
+                       [selectedIndex]="activeTab">
+            <mat-tab label="Pages">
+                <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" layout-padding>
+                                  <span class="push-left-sm">
+                                      <button mat-icon-button [matMenuTriggerFor]="menu">
+                                                  <mat-icon>more_vert</mat-icon>
+                                              </button>
+                                                <mat-menu #menu="matMenu">
+                                                  <button mat-menu-item routerLink="newPage/1">
+                                                    <mat-icon>add</mat-icon>
+                                                    <span>New text image</span>
+                                                  </button>
+                                                    <button mat-menu-item routerLink="newPage/2">
+                                                    <mat-icon>add</mat-icon>
+                                                    <span>New image text</span>
+                                                  </button>
+                                                    <button mat-menu-item routerLink="newPage/3">
+                                                    <mat-icon>add</mat-icon>
+                                                    <span>New image image</span>
+                                                  </button>
+                                                </mat-menu>
+                                    <span class="mat-title">{{title}}</span>
+                                  </span>
+                </div>
+                <mat-divider></mat-divider>
+                <table td-data-table #dataTable>
+                    <th td-data-table-column [sortable]="true" [sortOrder]="sortOrder" *ngFor="let column of columns"
+                        (sortChange)="sort($event, column.name)">
+                        {{column.label}}
+                    </th>
+                    <tbody>
+                    <tr #accordionModule td-data-table-row *ngFor="let row of data; let i = index" [attr._id]="row._id"
+                        [attr.index]="i">
+                        <td td-data-table-cell>
+                            {{i +1 }}
+                        </td>
+                        <td td-data-table-cell>
+                            <button mat-menu-item (click)="onSelect(row)">
+                                {{row.title}}
+                            </button>
+                        </td>
+                        <td td-data-table-cell>
+                            {{row.tstamp | date: 'dd.MM.y'}}
+                        </td>
+                        <td td-data-table-cell colspan="2">
+                            <div layout="row">
+                                <span layout-margin><a (click)="onEdit(row)"><mat-icon
+                                        color="accent">mode_edit</mat-icon></a></span>
+                                <span layout-margin><a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a></span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </mat-tab>
+            <mat-tab label="Graphics">
+                <div layout="row" layout-wrap>
+                    <div flex="25" layout-padding style="margin:20px 0;">
+                        <button mat-raised-button color="primary" (click)="addGraph()">Add Graphic</button>
+                    </div>
+                    <div style="margin-top:20px;" flex="100" *ngIf="media.length > 0">
+                        <div layout="row" layout-wrap>
+                            <div *ngFor="let img of media" flex="15" layout-padding>
+                                    <span class="mat-button-wrapper">
+                                        <mat-icon color="warn" (click)="onImgRemove(img.id)">cancel</mat-icon>
+                                    </span>
+                                <img [src]="img.src">
+                                <h4>{{img.name}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
+<router-outlet></router-outlet>

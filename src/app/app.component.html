@@ -1,0 +1,50 @@
+<td-layout>
+    <ng-template [ngIf]="authService.isAuthenticated()">
+    <td-layout-nav-list svgIcon="assets:logo" color="accent" [opened]="menuOpen" mode="side" sidenavWidth="250px">
+
+        <div td-sidenav-toolbar-content layout="row" layout-align="center">
+            <img src="../assets/images/offer_app_logo.svg">
+        </div>
+        <div td-toolbar-content layout="row" layout-align="start" flex="5">
+            <button mat-icon-button (click)="toggleMenu()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+        <div td-toolbar-content layout="row" layout-align="start center" flex>
+            <span>{{[pageTitle]}}</span>
+        </div>
+
+
+        <mat-nav-list td-sidenav-content>
+            <mat-list-item routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><mat-icon matListIcon>dashboard</mat-icon><a matLine [routerLink]="'/'">Dashboard</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>subtitles</mat-icon><a matLine routerLink="offers">Offers</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>text_fields</mat-icon><a matLine routerLink="additionalData">Pages</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>view_stream</mat-icon><a matLine routerLink="chapters">Chapters</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>view_module</mat-icon><a matLine routerLink="modules">Modules</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>work</mat-icon><a matLine routerLink="clients">Clients</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>group</mat-icon><a matLine routerLink="sellers">Sellers</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active"><mat-icon matListIcon>attach_money</mat-icon><a matLine routerLink="prices">Price per hour</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active" *ngIf="authService.isAdmin()"><mat-icon matListIcon>account_box</mat-icon><a matLine routerLink="users">Users</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+            <mat-list-item><mat-icon matListIcon>exit_to_app</mat-icon><a matLine (click)="onLogout()">Logout</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
+        </mat-nav-list>
+
+        <router-outlet></router-outlet>
+        <td-layout-footer>
+            <div layout="row" layout-align="start center">
+                <span class="mat-caption">Copyright &copy; 2018 Deepscreen. All rights reserved</span>
+            </div>
+        </td-layout-footer>
+    </td-layout-nav-list>
+    </ng-template>
+     <app-login *ngIf="!authService.isAuthenticated()"></app-login>
+</td-layout>

@@ -1,0 +1,149 @@
+<ng-template [ngIf]="item">
+    <mat-card>
+        <mat-card-title>
+            <div layout="row" layout-wrap>
+                <div flex="5">
+                    <button mat-icon-button (click)="goBack()" color="accent">
+                        <mat-icon >keyboard_backspace</mat-icon>
+                    </button>
+                </div>
+                <div flex="85" layout="column" layout-align="center start">{{[item.name]}}</div>
+                <div flex="10" layout="column" layout-align="center end">
+                    <button mat-mini-fab (click)="onEdit()" *ngIf="!editMode">
+                        <mat-icon>mode_edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="onSave(f)" *ngIf="editMode" color="primary">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>id: {{item._id}}</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <form #f="ngForm">
+                <div layout="row" layout-wrap>
+                    <div flex="100" layout-padding>
+                        <h3 style="margin: 0;">Info data</h3>
+                    </div>
+                    <div style="margin-top:20px;" flex="30" layout-padding>
+                        <mat-input-container style="max-width: 800px; width: 100%;">
+                            <input matInput placeholder="Title" [ngModel]="item.name" name="name" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="5" layout-padding>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Total price" [ngModel]="chapterPrice | number:'2.2-2'" name="subTotal" required readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Included price" [ngModel]="chapterSignedPrice | number:'2.2-2'" name="total" required readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Created date" [ngModel]="item.tstamp | date: 'dd.MM.y'" name="tstamp" readonly>
+                        </mat-input-container>
+                    </div>
+                    <div flex="10" layout-padding layout-align="center end" layout="column">
+                        <mat-checkbox [ngModel]="item.default" name="default" [disabled]="!editMode">Default chapter</mat-checkbox>
+                    </div>
+
+                    <!-- MODULES START -->
+
+                    <div flex="100" layout-padding>
+                        <mat-divider></mat-divider>
+                        <h3>Modules</h3>
+                    </div>
+                    <mat-card *ngFor="let module of chaptersModules" flex="100">
+                        <mat-card-content>
+                            <form #group._id="ngForm">
+                                <div layout="row" layout-wrap>
+                                    <div style="margin-top:20px;" flex="60" layout-padding>
+                                        <mat-input-container style="max-width: 800px; width: 100%;">
+                                            <input matInput placeholder="Name" [ngModel]="module.name"
+                                                   name="name" readonly>
+                                        </mat-input-container>
+                                    </div>
+                                    <div flex="15" layout-padding style="margin-top:20px;">
+                                        <mat-input-container>
+                                            <input matInput placeholder="Created date"
+                                                   [ngModel]="module.tstamp | date: 'dd.MM.y'" name="tstamp" readonly>
+                                        </mat-input-container>
+                                    </div>
+                                    <div style="margin-top:20px;" flex="15" layout-padding layout-align="center start" layout="column">
+                                        <mat-checkbox [ngModel]="module.signed" name="signed" disabled>Included</mat-checkbox>
+                                    </div>
+                                    <div flex="5" layout="column" layout-align="center end">
+                                        <button mat-mini-fab color="primary"
+                                                (click)="onModuleEdit(module._id, item._id, module.moduleNew, module)">
+                                            <mat-icon>mode_edit</mat-icon>
+                                        </button>
+                                    </div>
+                                    <div flex="5" layout="column" layout-align="center center">
+                                        <button mat-mini-fab color="warn"
+                                                (click)="onModuleRemove(module._id, item._id, module)">
+                                            <mat-icon>remove</mat-icon>
+                                        </button>
+                                    </div>
+                                    <div flex="15" layout-padding>
+                                        <mat-input-container>
+                                            <input matInput placeholder="Price" [ngModel]="module.price | number:'2.2-2'"
+                                                   name="price" readonly>
+                                        </mat-input-container>
+                                    </div>
+                                    <div flex="15" layout-padding>
+                                        <mat-input-container>
+                                            <input matInput placeholder="Internal hours" [ngModel]="module.internalHours"
+                                                   name="internalHours" readonly>
+                                        </mat-input-container>
+                                    </div>
+                                    <div flex="15" layout-padding>
+                                        <mat-input-container>
+                                            <input matInput placeholder="External hours" [ngModel]="module.externalHours"
+                                                   name="externalHours" readonly>
+                                        </mat-input-container>
+                                    </div>
+                                    <div flex="15" layout-padding>
+                                        <mat-input-container>
+                                            <input matInput placeholder="Price per hour" [ngModel]="module.pricePerHour"
+                                                   name="pricePerHour" readonly>
+                                        </mat-input-container>
+                                    </div>
+
+                                    <div style="margin-top:20px;" flex="100" layout-padding>
+                                        <h3 style="margin-top: 0;">Description</h3>
+
+                                        <div [innerHTML]="module.bodytext"></div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top:20px;" flex="100" layout-padding>
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                    <div flex="25" layout-padding style="margin:20px 0;">
+                        <button mat-raised-button  color="primary" [matMenuTriggerFor]="moduleMenu">Add
+                            module
+                        </button>
+                        <mat-menu #moduleMenu="matMenu">
+                            <button mat-menu-item (click)="addFromModuleList(item._id)">
+                                <mat-icon>playlist_add</mat-icon>
+                                <span >Select from list</span>
+                            </button>
+                            <button mat-menu-item (click)="addModule(item._id)">
+                                <mat-icon>add</mat-icon>
+                                <span >Add new</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

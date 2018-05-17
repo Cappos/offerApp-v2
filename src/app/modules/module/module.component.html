@@ -1,0 +1,94 @@
+<ng-template [ngIf]="item">
+
+    <mat-card>
+        <mat-card-title>
+            <div layout="row" layout-wrap>
+                <div flex="5">
+                    <button mat-icon-button (click)="goBack()" color="accent">
+                        <mat-icon>keyboard_backspace</mat-icon>
+                    </button>
+                </div>
+                <div flex="85" layout="column" layout-align="center start">{{[item.name]}}</div>
+                <div flex="10" layout="column" layout-align="center end">
+                    <button mat-mini-fab (click)="onEdit()" *ngIf="!editMode">
+                        <mat-icon>mode_edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="onSave(f)" *ngIf="editMode" color="primary">
+                        <mat-icon>done</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>id: {{item._id}}</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <form #f="ngForm">
+                <div layout="row" layout-wrap>
+                    <div style="margin-top:20px;" flex="50" layout-padding>
+                        <mat-input-container style="width: 100%; max-width: 700px;">
+                            <input matInput placeholder="Name" [ngModel]="item.name" name="name" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="20" layout-padding>
+                        <mat-input-container>
+                            <mat-select placeholder="Category" floatPlaceholder="auto" [(ngModel)]="selectedGroup"
+                                        [(value)]="selectedGroup" name="categoryId" [disabled]="!editMode">
+                                <mat-option *ngFor="let category of categories" [value]="category.value">
+                                    {{category.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="25" layout-padding layout-align="center start" layout="column">
+                        <mat-checkbox [ngModel]="item.signed" name="signed" [disabled]="!editMode">Included</mat-checkbox>
+                    </div>
+                    <div style="margin-top:20px;" flex="25" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Created date" [ngModel]="item.tstamp | date: 'dd.MM.y'"
+                                   name="tstamp" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Price" [ngModel]="totalPrice | number:'3.2'" name="price" readonly>
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="Internal hours" [ngModel]="item.internalHours"
+                                   name="internalHours" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <input matInput placeholder="External hours" [ngModel]="item.externalHours"
+                                   name="externalHours" required
+                                   [readonly]="!editMode">
+                        </mat-input-container>
+                    </div>
+                    <div style="margin-top:20px;" flex="15" layout-padding>
+                        <mat-input-container>
+                            <mat-select placeholder="Price list" floatPlaceholder="auto" [ngModel]="selectedPrice"
+                                        name="selectedPrice" [disabled]="!editMode">
+                                <mat-option [value]="selectedPrice">
+                                    {{selectedPrice}}
+                                </mat-option>
+                                <mat-option *ngFor="let price of prices" [value]="price.value">
+                                    {{price.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-input-container>
+                    </div>
+
+                    <div style="margin-top:20px;" flex="100" layout-padding>
+                        <app-tiny-editor [elementId]="'rte'" [editMode]="editMode" [rteData]="item.bodytext"
+                                         (onEditorContentChange)="keyupHandler($event)"></app-tiny-editor>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

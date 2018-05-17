@@ -1,0 +1,154 @@
+<section id="content" class="pdf-container">
+    <div class="section-top">
+        <div class="logo">
+            <img src="https://www.deep-screen.ch/assets/logo.png" alt="logo">
+        </div>
+        <div class="line1">
+            <img src="https://i.imgur.com/pVtkNBu.png" alt="line1">
+        </div>
+        <div class="section-title">
+            <h1 class="main-title">Projekt Offerte</h1>
+            <h1 class="main-title">{{offerData.offerTitle}}</h1>
+            <br/>
+            <h2>Wir lösen Ihre Business Challenges.</h2>
+        </div>
+        <div class="line2">
+            <img src="https://i.imgur.com/oHMDK49.jpg" alt="line2">
+        </div>
+        <div class="offer-info-container">
+            <div class="offer-info offer-info1">
+                <!--<h4>{{offerData.offerNumber}}</h4>-->
+                <!--<p>{{offerData.sealer[0].name}}</p>-->
+                <!--<p>{{offerData.client[0].companyName}}</p>-->
+                <!--<p>{{offerData.tstamp | date: 'dd.MM.y'}}</p>-->
+                <!--<p>{{offerData.expDate | date: 'dd.MM.y'}}</p>-->
+                <!--<p>{{offerData.totalPrice}}</p>-->
+                <p>Referenz-Nr.:{{offerData.offerNumber}}</p>
+                <p>Dokumenttyp: Offerte</p>
+                <p>Datum: {{offerData.tstamp | date: 'dd.MM.y'}}</p>
+                <p>Version: 1.0</p>
+            </div>
+            <div class="offer-info">
+                <h4>Verantwortliche Person:</h4>
+                <p>deepscreen GmbH</p>
+                <p>{{offerData.sealer[0].name}}</p>
+                <p>Tel. {{offerData.sealer[0].phone}}</p>
+                <p>Mob. {{offerData.sealer[0].mobile}}</p>
+                <p>{{offerData.sealer[0].mail}}</p>
+            </div>
+            <div class="offer-info">
+                <h4>Empfänger:</h4>
+                <p>orell füssli security printing ltd </p>
+                <p>{{offerData.client[0].name}}</p>
+                <p>Tel. {{offerData.client[0].phone}}</p>
+                <p>Mob. {{offerData.client[0].mobile}}</p>
+                <p>{{offerData.client[0].mail}}</p>
+            </div>
+        </div>
+        <div class="section-top-bottom">
+            <p>Dieses Dokument ist vertraulich und ausschliesslich für den unten angegebenen Empfänger bestimmt.Kein Bestandteil dieser Dokumentation darf in irgendeiner Form, weder elektronisch noch mechanisch, zu irgendwelchen Zwecken vervielfältigt werden. Diese Dokumentation ist urheberrechtlich geschützt und darf nicht an unautorisierte Dritte weitergegeben werden.
+            </p>
+        </div>
+    </div>
+
+    <ng-container *ngFor="let group of offerGroups; let i = index" ngSwitch="{{group.type}}">
+
+        <!-- PAGES -->
+        <div *ngSwitchCase="'2'">
+            <div class="page-wrapper">
+                <div class="line3">
+                    <img src="https://i.imgur.com/XAkhpSy.png" alt="line3">
+                </div>
+                <div class="content-wrapper">
+                    <h2>{{group.title}}</h2>
+                    <h4>{{group.subtitle}}</h4>
+                    <div class="group-info">
+                        <div [innerHTML]="group.bodytext"></div>
+                        <!--<p>{{group.tstamp | date: 'dd.MM.y'}}</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHAPTERS -->
+        <div *ngSwitchCase="'1'">
+            <div class="page-wrapper">
+                <div class="content-wrapper">
+                    <h2>{{group.name}}</h2>
+
+                    <!--<p>{{group.tstamp | date: 'dd.MM.y'}}</p>-->
+                    <div class="modules" *ngFor="let module of group.modules">
+                        <table style="border-collapse: collapse; width: 100%;" border="0">
+                            <tbody>
+                            <tr class="modules-header">
+                                <th class="first-td">
+                                    <h4>{{module.name}}</h4>
+                                </th>
+                                <th class="second-td">
+                                    <h4>Betrag</h4>
+                                </th>
+                                <th class="third-td">
+                                    <h4>Enthalten</h4>
+                                </th>
+
+                            </tr>
+                            <tr class="modules-main">
+                                <th class="first-td">
+                                    <p [innerHTML]="module.bodytext"></p>
+                                </th>
+                                <th class="second-td">
+                                    <p class="module-price">{{module.price | number:'2.2-2'}}</p>
+                                </th>
+                                <th class="img-shape third-td">
+                                    <img src="https://i.imgur.com/BCFrz7n.png" alt="x">
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--<p>{{module.categoryId[0].name}}</p>-->
+                        <!--<p>{{module.tstamp | date: 'dd.MM.y'}}</p>-->
+                    </div>
+                    <table class="total-table">
+                        <tbody>
+                        <tr class="total">
+                            <th>
+                                <h4>Total</h4>
+                            </th>
+                            <th>
+                                <p>{{group.subTotal}}</p>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="bemerkungen">
+                        <h4>Bemerkungen</h4>
+                        <ul>
+                            <li>Alle Preise sind in Schweizer Franken exkl. Mehrwertsteuer angegeben.</li>
+                            <li>Konditionen einmalige Kosten: 50% fällig nach Abschluss des Vertrags; Restbetrag fällig 12 Wochen nach Projektstart (Kickoff Meeting).</li>
+                            <li>Die Nutzungsrechte sind für den Gebrauch der Weblösung abgegolten.</li>
+                            <li>Diese Offerte behält ihre Gültigkeit bis zum {{offerData.expDate | date: 'dd.MM.y'}}</li>
+                            <li>Alle Inhalte (Texte, Bilder, Logos) werden vom Kunden in digitaler Form spätestens eine Woche vor der Content-Eingabe geliefert.</li>
+                            <li>Einmalige Content-Eingabe ist im Preis inbegriffen. Nachträgliches Hinzufügen oder Ändern des Inhaltes wird nach Aufwand verrechnet.</li>
+                            <li>Erst mit der vollständigen Bezahlung des vertraglich festgesetzten Preises wird das Nutzungsrecht erworben.</li>
+                        </ul>
+                        <p>Sind Sie mit unserem Angebot einverstanden, unterschreiben Sie die Offerte und faxen Sie sie komplett an folgende Nummer: +41 43 255 65 94 oder senden Sie sie an: deepscreen GmbH, Binzmühlestrasse 97, 8050 Zürich.</p>
+                    </div>
+                    <table class="manager-table">
+                        <tbody>
+                        <tr class="manager">
+                            <th>
+                                <h4>{{offerData.sealer[0].name}}</h4>
+                            </th>
+                            <th>
+                                <h4 class="manager-date">Zürich,{{group.tstamp | date: 'dd.MM.y'}}</h4>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p class="auftrag">Auftrag erteilt, Datum, Stempel, Unterschrift</p>
+                </div>
+            </div>
+        </div>
+        <!-- PAGES CHAPTERS END -->
+    </ng-container>
+</section>
