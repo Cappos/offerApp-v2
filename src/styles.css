@@ -153,4 +153,35 @@ a {
     margin-top: 15px;
 }
 
+/* Column Widths */
+.mat-column-_id {
+    max-width: 64px;
+}
 
+.mat-column-price {
+    max-width: 124px;
+}
+
+.mat-column-tstamp {
+    max-width: 124px;
+}
+
+.mat-column-bodytext {
+    padding: 0 24px;
+}
+
+.mat-column-actions, .mat-column-categoryId {
+    max-width: 124px;
+
+}
+.mat-column-categoryId {
+    padding: 0 24px;
+}
+
+.table-link {
+    cursor: pointer;
+}
+
+mat-row:hover {
+    background: #EEEEEE;
+}

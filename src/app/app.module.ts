@@ -19,10 +19,11 @@ import {
     MatButtonModule, MatCardModule, MatGridListModule, MatIconModule, MatListModule, MatMenuModule, MatOptionModule,
     MatTabsModule,
     MatToolbarModule, MatTooltipModule, MatCheckboxModule, MatSidenavModule, MatSlideToggleModule,
-    MatAutocompleteModule, MatSelectModule, MatDialogModule, MatSnackBarModule, MatNativeDateModule, MatDatepickerModule,
-    MatInputModule, MatExpansionModule, MatChipsModule
+    MatAutocompleteModule, MatSelectModule, MatDialogModule, MatSnackBarModule, MatNativeDateModule,
+    MatDatepickerModule,
+    MatInputModule, MatExpansionModule, MatChipsModule, MatPaginatorModule, MatSortModule
 } from '@angular/material';
-import {MatFormFieldModule} from '@angular/material';
+import {MatFormFieldModule, MatTableModule} from '@angular/material';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -55,7 +56,7 @@ import {MediaBrowserComponent} from './media-browser/media-browser.component';
 import {DataService} from './shared/data.service';
 import { PageListDialogComponent } from './additional-data/page-list-dialog/page-list-dialog.component';
 import { PageEditDialogComponent } from './additional-data/page-edit-dialog/page-edit-dialog.component';
-import {Apollo, ApolloModule} from "apollo-angular";
+import {Apollo, ApolloModule} from 'apollo-angular';
 import {DataNodeService} from "./dataNode.service";
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from "apollo-cache-inmemory";
@@ -76,6 +77,7 @@ import { ContactPersonDialogComponent } from './clients/contact-person-dialog/co
 import {StringReplace} from './shared/stringReplace.pipe';
 import { TaskDialogComponent } from './offers/task-dialog/task-dialog.component';
 import {SafeHtml} from "./pipes/safeHtml.pipe";
+import {CdkTableModule} from "@angular/cdk/table";
 
 
 @NgModule({
@@ -158,6 +160,10 @@ import {SafeHtml} from "./pipes/safeHtml.pipe";
         MatNativeDateModule,
         MatExpansionModule,
         MatChipsModule,
+        MatPaginatorModule,
+        MatTableModule,
+        CdkTableModule,
+        MatSortModule,
         /** Covalent Modules */
         CovalentLoadingModule,
         CovalentLayoutModule,
