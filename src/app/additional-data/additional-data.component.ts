@@ -1,16 +1,13 @@
 import {
-    Component, HostBinding, OnInit, Output, ElementRef, QueryList, ViewChildren, ViewContainerRef
+    Component, HostBinding, OnInit, ViewContainerRef, ViewChild
 } from '@angular/core';
 import {SharedService} from '../shared/shared.service';
-import {
-    ITdDataTableColumn, ITdDataTableSortChangeEvent, LoadingMode, LoadingType, TdDataTableSortingOrder,
-    TdLoadingService, TdDialogService
-} from '@covalent/core';
+import {LoadingMode, LoadingType, TdLoadingService, TdDialogService} from '@covalent/core';
 import 'rxjs';
 import {Router} from '@angular/router';
 import {slideInDownAnimation} from '../_animations/app.animations';
 import {MediaBrowserComponent} from '../media-browser/media-browser.component';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Apollo} from "apollo-angular";
 import getPages from '../queries/page/fetchPages';
 import removePage from '../queries/page/deletePage';
@@ -26,20 +23,23 @@ export class AdditionalDataComponent implements OnInit {
     @HostBinding('class.td-route-animation') classAnimation = true;
 
     pageTitle = 'Default text data';
-    title = 'Select option';
-    @Output() activeTab = 0;
-    @ViewChildren('accordionModule', {read: ElementRef}) accordionModule: QueryList<ElementRef>;
-    columns: ITdDataTableColumn[] = [
-        {name: 'uid', label: 'No.', tooltip: 'No.'},
-        {name: 'title', label: 'Page title', tooltip: 'Page title'},
-        {name: 'tstamp', label: 'Date', tooltip: 'Date'},
-        {name: 'action', label: 'Actions', tooltip: 'Actions'},
+    title = ' List of all Pages';
+    data: any[];
+    media: any[] = [];
+    pageSize = 10;
+    columns = [];
+    tableData;
+    displayedColumns;
+    dataSource: MatTableDataSource<Object>;
+    tableHeader: any [] = [
+        {field: '_id', name: 'No.'},
+        {field: 'title', name: 'Title'},
+        {field: 'tstamp', name: 'Date'},
+        {field: 'actions', name: 'Actions'}
     ];
 
-    data: any[];
-    sortBy = 'id';
-    sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-    media: any[] = [];
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
     constructor(private sharedService: SharedService, private router: Router, private loadingService: TdLoadingService, public dialog: MatDialog, private apollo: Apollo, private _dialogService: TdDialogService, private _viewContainerRef: ViewContainerRef) {
         this.loadingService.create({
@@ -58,19 +58,43 @@ export class AdditionalDataComponent implements OnInit {
             fetchPolicy: 'network-only'
         }).valueChanges.subscribe(({data}) => {
             this.data = data.pages;
+            this.tableData = this.data;
+
+            // Assign the data to the data source for the table to render
+            this.dataSource = new MatTableDataSource(this.tableData);
+
+            for (let item in this.tableHeader) {
+                let data;
+
+                // Set dynamic table header data
+                this.columns.push(
+                    {
+                        columnDef: this.tableHeader[item].field,
+                        header: this.tableHeader[item].name,
+                        cell: (element) => {
+                            for (let el in element) {
+                                if (el == this.tableHeader[item].field) {
+                                    data = element[el]
+                                }
+                            }
+                            return data
+                        }
+                    }
+                );
+            }
+
+            this.displayedColumns = this.columns.map(c => c.columnDef);  // Set dynamic table column data
+            this.dataSource.paginator = this.paginator; // Set pagination
+            this.dataSource.sort = this.sort;
             this.loadingService.resolveAll('modulesLoader');
         });
     }
 
-    sort(sortEvent: ITdDataTableSortChangeEvent, name: string): void {
-        this.sortBy = name;
-        this.sortOrder = sortEvent.order === TdDataTableSortingOrder.Descending ? TdDataTableSortingOrder.Ascending : TdDataTableSortingOrder.Descending;
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
     }
-
-    onSelectChange = ($event: any): void => {
-        this.activeTab = $event.index;
-        this.router.navigate(['/additionalData/']);
-    };
 
     onEdit(row) {
         let id = row['_id'];
@@ -108,19 +132,5 @@ export class AdditionalDataComponent implements OnInit {
         let type = row['pageType'];
         console.log(type);
         this.router.navigate(['/additionalData/page/' + id + '/' + type]);
-    }
-
-    addGraph() {
-        const dialogRef = this.dialog.open(MediaBrowserComponent);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                console.log(result);
-                this.media.push(result);
-            }
-        });
-    }
-
-    onImgRemove(id: number) {
-        this.media.splice(this.media.findIndex(el => el.id === id), 1);
     }
 }

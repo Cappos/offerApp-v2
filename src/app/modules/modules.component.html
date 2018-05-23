@@ -13,13 +13,11 @@
                 </mat-menu>
     <span class="mat-title">{{title}}</span>
   </span>
-            <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
-     </span>
-            <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
-                           (searchDebounce)="search($event)" flex (keyup)="applyFilter($event.target.value)">
-            </td-search-box>
+            <span *ngIf="!searchBox.searchVisible" class="push-left-sm"></span>
+            <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here" flex (keyup)="applyFilter($event.target.value)"></td-search-box>
         </div>
         <mat-divider></mat-divider>
+
         <mat-table #table [dataSource]="dataSource" matSort matSortActive="tstamp" matSortDirection="desc">
             <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.columnDef">
                 <mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
@@ -34,7 +32,7 @@
                     <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Price'">{{ column.cell(row) | number:'3.2' }}</div>
                     <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Date'">{{ column.cell(row) | date: 'dd.MM.y' }}</div>
                     <div *ngIf="column.header == 'Actions'">
-                        <a (click)="onEdit(row)"><mat-icon color="primary">mode_edit</mat-icon></a>
+                        <a (click)="onEdit(row)"><mat-icon color="accent">mode_edit</mat-icon></a>
                         <a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a>
                     </div>
                 </mat-cell>
@@ -46,7 +44,7 @@
         </mat-table>
 
         <mat-paginator [length]="pagination"
-                       [pageSize]="10"
+                       [pageSize]="pageSize"
                        [pageSizeOptions]="[5, 10, 25, 100]">
         </mat-paginator>
     </mat-card-content>

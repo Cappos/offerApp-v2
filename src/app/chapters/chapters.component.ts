@@ -1,18 +1,14 @@
-import {Component, HostBinding, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, HostBinding, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {SharedService} from '../shared/shared.service';
 import 'rxjs';
 import 'rxjs/add/operator/take';
-
-import {
-    IPageChangeEvent,
-    ITdDataTableColumn, ITdDataTableSortChangeEvent, LoadingMode, LoadingType, TdDataTableService,
-    TdDataTableSortingOrder, TdDialogService, TdLoadingService
-} from '@covalent/core';
+import {LoadingMode, LoadingType, TdDialogService, TdLoadingService} from '@covalent/core';
 import {Router} from "@angular/router";
 import {slideInDownAnimation} from "../_animations/app.animations";
 import {Apollo} from "apollo-angular";
 import fetchGroups from '../queries/group/fetchGroups';
 import removeGroup from '../queries/group/deleteGroup';
+import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
 
 @Component({
     selector: 'app-chapters',
@@ -28,28 +24,25 @@ export class ChaptersComponent implements OnInit {
 
     pageTitle = 'Chapters';
     title = 'List of all chapters';
-    color = 'grey';
-    disabled = false;
-
-    columns: ITdDataTableColumn[] = [
-        {name: 'id', label: 'No.', tooltip: 'No.'},
-        {name: 'name', label: 'Name', tooltip: 'Name'},
-        {name: 'price', label: 'Price', tooltip: 'Price'},
-        {name: 'tstamp', label: 'Date', tooltip: 'Date'},
-        {name: 'action', label: 'Actions', tooltip: 'Actions'},
+    data: any[];
+    pageSize = 10;
+    columns = [];
+    tableData;
+    displayedColumns;
+    dataSource: MatTableDataSource<Object>;
+    tableHeader: any [] = [
+        {field: '_id', name: 'No.'},
+        {field: 'name', name: 'Name'},
+        {field: 'subTotal', name: 'Price'},
+        {field: 'tstamp', name: 'Date'},
+        {field: 'actions', name: 'Actions'}
     ];
 
-    data: any[];
-    filteredData;
-    filteredTotal: number;
-    searchTerm = '';
-    fromRow = 1;
-    currentPage = 1;
-    pageSize = 10;
-    sortBy = 'id';
-    sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private sharedService: SharedService, private _dataTableService: TdDataTableService, private router: Router, private _dialogService: TdDialogService, private _viewContainerRef: ViewContainerRef, private loadingService: TdLoadingService, private apollo: Apollo) {
+
+    constructor(private sharedService: SharedService, private router: Router, private _dialogService: TdDialogService, private _viewContainerRef: ViewContainerRef, private loadingService: TdLoadingService, private apollo: Apollo) {
         this.loadingService.create({
             name: 'modulesLoader',
             type: LoadingType.Circular,
@@ -65,46 +58,39 @@ export class ChaptersComponent implements OnInit {
             query: fetchGroups
         }).valueChanges.subscribe(({data}) => {
             this.data = data.groups;
-            this.filteredData = this.data;
-            this.filteredTotal = this.data.length;
-            this.filter();
+            this.tableData = this.data;
+
+            // Assign the data to the data source for the table to render
+            this.dataSource = new MatTableDataSource(this.tableData);
+
+            for (let item in this.tableHeader) {
+                let data;
+
+                // Set dynamic table header data
+                this.columns.push(
+                    {
+                        columnDef: this.tableHeader[item].field,
+                        header: this.tableHeader[item].name,
+                        cell: (element) => {
+                            for (let el in element) {
+                                if (el == this.tableHeader[item].field) {
+                                    data = element[el]
+                                }
+                            }
+                            return data
+                        }
+                    }
+                );
+            }
+
+            this.displayedColumns = this.columns.map(c => c.columnDef);  // Set dynamic table column data
+            this.dataSource.paginator = this.paginator; // Set pagination
+            this.dataSource.sort = this.sort;
             this.loadingService.resolveAll('modulesLoader');
         });
     }
 
-    sort(sortEvent: ITdDataTableSortChangeEvent, name: string): void {
-        this.sortBy = name;
-        this.sortOrder = sortEvent.order === TdDataTableSortingOrder.Descending ? TdDataTableSortingOrder.Ascending : TdDataTableSortingOrder.Descending;
-        this.filter();
-    }
 
-    search(searchTerm: string): void {
-        this.searchTerm = searchTerm;
-        this.filter();
-    }
-
-    page(pagingEvent: IPageChangeEvent): void {
-        this.fromRow = pagingEvent.fromRow;
-        this.currentPage = pagingEvent.page;
-        this.pageSize = pagingEvent.pageSize;
-        this.filter();
-    }
-
-    filter(): void {
-        let newData: any[] = this.data;
-        const excludedColumns: string[] = this.columns
-            .filter((column: ITdDataTableColumn) => {
-                return ((column.filter === undefined && column.hidden === true) ||
-                (column.filter !== undefined && column.filter === false));
-            }).map((column: ITdDataTableColumn) => {
-                return column.name;
-            });
-        newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
-        this.filteredTotal = newData.length;
-        newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
-        newData = this._dataTableService.pageData(newData, this.fromRow, this.currentPage * this.pageSize);
-        this.filteredData = newData;
-    }
 
     onEdit(row: any) {
         let id = row['_id'];
@@ -139,8 +125,9 @@ export class ChaptersComponent implements OnInit {
 
     }
 
-    onSelect(uid) {
-        this.router.navigate(['/chapters/' + uid]);
+    onSelect(row): any {
+        let id = row['_id'];
+        this.router.navigate(['/chapters/' + id]);
     }
 
 }

@@ -3,12 +3,7 @@ import {SharedService} from '../shared/shared.service';
 import 'rxjs';
 import 'rxjs/add/operator/take';
 import getModulesData from '../queries/module/fetchModules';
-
-import {
-    IPageChangeEvent,
-    ITdDataTableColumn, ITdDataTableSortChangeEvent, LoadingMode, LoadingType, TdDataTableService,
-    TdDataTableSortingOrder, TdDialogService, TdLoadingService
-} from '@covalent/core';
+import { LoadingMode, LoadingType, TdDialogService, TdLoadingService} from '@covalent/core';
 import {Router} from "@angular/router";
 import {Apollo} from 'apollo-angular';
 import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
@@ -28,27 +23,8 @@ export class ModulesComponent implements OnInit {
 
     pageTitle = 'Modules';
     title = 'List of all modules';
-    color = 'grey';
-    disabled = false;
-    // columns: ITdDataTableColumn[] = [
-    //     {name: '_id', label: 'No.', tooltip: 'No.'},
-    //     {name: 'name', label: 'Name', tooltip: 'Name'},
-    //     {name: 'bodytext', label: 'Description', tooltip: 'Description'},
-    //     {name: 'category', label: 'Category', tooltip: 'Category'},
-    //     {name: 'price', label: 'Price', tooltip: 'Price'},
-    //     {name: 'tstamp', label: 'Date', tooltip: 'Date'},
-    //     {name: 'action', label: 'Actions', tooltip: 'Actions'},
-    // ];
-
     data: any[];
-    filteredData;
-    filteredTotal: number;
-    searchTerm = '';
-    fromRow = 1;
-    currentPage = 1;
-    pageSize = 15;
-    sortBy = '_id';
-    sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+    pageSize = 10;
     columns = [];
     tableData;
     displayedColumns;
@@ -66,7 +42,7 @@ export class ModulesComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private sharedService: SharedService, private _dataTableService: TdDataTableService, private router: Router, private dialog: MatDialog, private _dialogService: TdDialogService, private _viewContainerRef: ViewContainerRef, private loadingService: TdLoadingService, private apollo: Apollo) {
+    constructor(private sharedService: SharedService, private router: Router, private dialog: MatDialog, private _dialogService: TdDialogService, private _viewContainerRef: ViewContainerRef, private loadingService: TdLoadingService, private apollo: Apollo) {
 
         this.loadingService.create({
             name: 'modulesLoader',
@@ -83,7 +59,6 @@ export class ModulesComponent implements OnInit {
             query: getModulesData
         }).valueChanges.subscribe(({data}) => {
             this.data = data.modules;
-            console.log(this.data);
             this.tableData = this.data;
 
             // Assign the data to the data source for the table to render
@@ -109,10 +84,8 @@ export class ModulesComponent implements OnInit {
                 );
             }
 
-            // Set dynamic table column data
-            this.displayedColumns = this.columns.map(c => c.columnDef);
-
-            this.dataSource.paginator = this.paginator;
+            this.displayedColumns = this.columns.map(c => c.columnDef);  // Set dynamic table column data
+            this.dataSource.paginator = this.paginator; // Set pagination
             this.dataSource.sort = this.sort;
             this.loadingService.resolveAll('modulesLoader');
         });
@@ -158,9 +131,9 @@ export class ModulesComponent implements OnInit {
 
     }
 
-    onSelect(id){
-        console.log(id);
-        // this.router.navigate(['/modules/' + id ]);
+    onSelect(row: any){
+        let id = row['_id'];
+        this.router.navigate(['/modules/' + id ]);
     }
 
 }

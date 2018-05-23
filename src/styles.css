@@ -154,12 +154,18 @@ a {
 }
 
 /* Column Widths */
-.mat-column-_id {
+.mat-column-_id, .mat-column-check {
     max-width: 64px;
 }
+.mat-column-check {
+    overflow: visible !important;
+}
+.mat-column-title, .mat-column-subtitle {
+   min-width: 300px;
+}
 
-.mat-column-price {
-    max-width: 124px;
+.mat-column-price, .mat-column-subTotal {
+      max-width: 124px;
 }
 
 .mat-column-tstamp {

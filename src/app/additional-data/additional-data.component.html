@@ -1,15 +1,6 @@
 <mat-card>
-    <mat-card-title>
-        <div layout="row" layout-wrap>
-            <div flex="100" layout="column" layout-align="center start">{{title}}</div>
-        </div>
-    </mat-card-title>
-    <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-tab-group dynamicHeight="true" #tabGroup (selectChange)="onSelectChange($event)"
-                       [selectedIndex]="activeTab">
-            <mat-tab label="Pages">
-                <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" layout-padding>
+        <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" layout-padding>
                                   <span class="push-left-sm">
                                       <button mat-icon-button [matMenuTriggerFor]="menu">
                                                   <mat-icon>more_vert</mat-icon>
@@ -30,57 +21,33 @@
                                                 </mat-menu>
                                     <span class="mat-title">{{title}}</span>
                                   </span>
+                    <span *ngIf="!searchBox.searchVisible" class="push-left-sm"></span>
+                    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here" flex (keyup)="applyFilter($event.target.value)"></td-search-box>
                 </div>
                 <mat-divider></mat-divider>
-                <table td-data-table #dataTable>
-                    <th td-data-table-column [sortable]="true" [sortOrder]="sortOrder" *ngFor="let column of columns"
-                        (sortChange)="sort($event, column.name)">
-                        {{column.label}}
-                    </th>
-                    <tbody>
-                    <tr #accordionModule td-data-table-row *ngFor="let row of data; let i = index" [attr._id]="row._id"
-                        [attr.index]="i">
-                        <td td-data-table-cell>
-                            {{i +1 }}
-                        </td>
-                        <td td-data-table-cell>
-                            <button mat-menu-item (click)="onSelect(row)">
-                                {{row.title}}
-                            </button>
-                        </td>
-                        <td td-data-table-cell>
-                            {{row.tstamp | date: 'dd.MM.y'}}
-                        </td>
-                        <td td-data-table-cell colspan="2">
-                            <div layout="row">
-                                <span layout-margin><a (click)="onEdit(row)"><mat-icon
-                                        color="accent">mode_edit</mat-icon></a></span>
-                                <span layout-margin><a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a></span>
+                <mat-table #table [dataSource]="dataSource" matSort matSortActive="tstamp" matSortDirection="desc">
+                    <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.columnDef">
+                        <mat-header-cell *cdkHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+                        <mat-cell *cdkCellDef="let row; let i = index;">
+                            <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'No.'">{{i +1 }}</div>
+                            <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Title'">{{ column.cell(row)}}</div>
+                            <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Date'">{{ column.cell(row) | date: 'dd.MM.y' }}</div>
+                            <div *ngIf="column.header == 'Actions'">
+                                <a (click)="onEdit(row)"><mat-icon color="accent">mode_edit</mat-icon></a>
+                                <a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a>
                             </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </mat-tab>
-            <mat-tab label="Graphics">
-                <div layout="row" layout-wrap>
-                    <div flex="25" layout-padding style="margin:20px 0;">
-                        <button mat-raised-button color="primary" (click)="addGraph()">Add Graphic</button>
-                    </div>
-                    <div style="margin-top:20px;" flex="100" *ngIf="media.length > 0">
-                        <div layout="row" layout-wrap>
-                            <div *ngFor="let img of media" flex="15" layout-padding>
-                                    <span class="mat-button-wrapper">
-                                        <mat-icon color="warn" (click)="onImgRemove(img.id)">cancel</mat-icon>
-                                    </span>
-                                <img [src]="img.src">
-                                <h4>{{img.name}}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+                <mat-paginator [length]="pagination"
+                               [pageSize]="pageSize"
+                               [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+
     </mat-card-content>
 </mat-card>
 <router-outlet></router-outlet>
