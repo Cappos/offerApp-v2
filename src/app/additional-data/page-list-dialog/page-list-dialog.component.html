@@ -15,10 +15,6 @@
       <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Title'">{{ column.cell(row) | shorten: 30: '...'}}</div>
       <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Subtitle'">{{ column.cell(row)| shorten: 30: '...'}}</div>
       <div class="table-link" (click)="onSelect(row)" *ngIf="column.header === 'Date'">{{ column.cell(row) | date: 'dd.MM.y' }}</div>
-      <div *ngIf="column.header == 'Actions'">
-        <a (click)="onEdit(row)"><mat-icon color="accent">mode_edit</mat-icon></a>
-        <a (click)="onDelete(row)"><mat-icon color="warn">delete</mat-icon></a>
-      </div>
     </mat-cell>
   </ng-container>
 

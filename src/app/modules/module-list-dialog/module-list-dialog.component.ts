@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import 'rxjs';
 import 'rxjs/add/operator/take';
 import {
@@ -6,7 +6,7 @@ import {
     ITdDataTableColumn, ITdDataTableSortChangeEvent, LoadingMode, LoadingType, TdDataTableService,
     TdDataTableSortingOrder, TdLoadingService
 } from '@covalent/core';
-import {MatDialog, MatDialogRef} from "@angular/material";
+import {MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
 import {SharedService} from "../../shared/shared.service";
 import {Apollo} from 'apollo-angular';
 import getModulesData from '../../queries/module/fetchModules';
@@ -21,28 +21,25 @@ import * as _ from "lodash";
 export class ModuleListDialogComponent implements OnInit {
     pageTitle = 'Modules';
     title = 'List of all modules';
-    color = 'grey';
-    columns: ITdDataTableColumn[] = [
-        {name: 'chacked', label: '', tooltip: '', width: 50},
-        {name: 'uid', label: 'No.', tooltip: 'No.', width: 70},
-        {name: 'name', label: 'Name', tooltip: 'Name'},
-        {name: 'bodytext', label: 'Description', tooltip: 'Description', width: 400},
-        {name: 'category', label: 'Category', tooltip: 'Category', width: 150},
-        {name: 'price', label: 'Price', tooltip: 'Price'},
-        {name: 'tstamp', label: 'Date', tooltip: 'Date', width: 150}
-    ];
-
     data: any[];
-    filteredData;
-    filteredTotal: number;
-    searchTerm = '';
-    fromRow = 1;
-    currentPage = 1;
-    pageSize = 5;
-    sortBy = 'uid';
-    sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
     selectedModule: any;
     selectedRows: any[] = [];
+    pageSize = 10;
+    columns = [];
+    tableData;
+    displayedColumns;
+    dataSource: MatTableDataSource<Object>;
+    tableHeader: any [] = [
+        {field: 'check', name: 'Select'},
+        {field: '_id', name: 'No.'},
+        {field: 'name', name: 'Name'},
+        {field: 'categoryId', name: 'Category'},
+        {field: 'price', name: 'Price'},
+        {field: 'tstamp', name: 'Date'}
+    ];
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
     constructor(private sharedService: SharedService, private _dataTableService: TdDataTableService, public dialog: MatDialog, public dialogRef: MatDialogRef<ModuleListDialogComponent>, private loadingService: TdLoadingService, private apollo: Apollo) {
 
@@ -63,45 +60,42 @@ export class ModuleListDialogComponent implements OnInit {
             fetchPolicy: 'network-only'
         }).valueChanges.subscribe(({data}) => {
             this.data = _.cloneDeep(data.modules);
-            this.filteredData = this.data;
-            this.filteredTotal = this.data.length;
-            this.filter();
+            this.tableData = this.data;
+
+            // Assign the data to the data source for the table to render
+            this.dataSource = new MatTableDataSource(this.tableData);
+
+            for (let item in this.tableHeader) {
+                let data;
+
+                // Set dynamic table header data
+                this.columns.push(
+                    {
+                        columnDef: this.tableHeader[item].field,
+                        header: this.tableHeader[item].name,
+                        cell: (element) => {
+                            for (let el in element) {
+                                if (el == this.tableHeader[item].field) {
+                                    data = element[el]
+                                }
+                            }
+                            return data
+                        }
+                    }
+                );
+            }
+
+            this.displayedColumns = this.columns.map(c => c.columnDef);  // Set dynamic table column data
+            this.dataSource.paginator = this.paginator; // Set pagination
+            this.dataSource.sort = this.sort;
             this.loadingService.resolveAll('modulesLoader');
         });
     }
 
-    sort(sortEvent: ITdDataTableSortChangeEvent, name: string): void {
-        this.sortBy = name;
-        this.sortOrder = sortEvent.order === TdDataTableSortingOrder.Descending ? TdDataTableSortingOrder.Ascending : TdDataTableSortingOrder.Descending;
-        this.filter();
-    }
-
-    search(searchTerm: string): void {
-        this.searchTerm = searchTerm;
-        this.filter();
-    }
-
-    page(pagingEvent: IPageChangeEvent): void {
-        this.fromRow = pagingEvent.fromRow;
-        this.currentPage = pagingEvent.page;
-        this.pageSize = pagingEvent.pageSize;
-        this.filter();
-    }
-
-    filter(): void {
-        let newData: any[] = this.data;
-        const excludedColumns: string[] = this.columns
-            .filter((column: ITdDataTableColumn) => {
-                return ((column.filter === undefined && column.hidden === true) ||
-                (column.filter !== undefined && column.filter === false));
-            }).map((column: ITdDataTableColumn) => {
-                return column.name;
-            });
-        newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
-        this.filteredTotal = newData.length;
-        newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
-        newData = this._dataTableService.pageData(newData, this.fromRow, this.currentPage * this.pageSize);
-        this.filteredData = newData;
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
     }
 
     toggleEditable(event, id) {
