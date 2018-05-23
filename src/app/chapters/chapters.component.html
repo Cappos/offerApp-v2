@@ -15,8 +15,7 @@
   </span>
             <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
      </span>
-            <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
-                           (searchDebounce)="search($event)" flex (keyup)="applyFilter($event.target.value)">
+            <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here" flex (keyup)="applyFilter($event.target.value)">
             </td-search-box>
         </div>
         <mat-divider></mat-divider>

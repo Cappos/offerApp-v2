@@ -90,7 +90,11 @@ export class ChaptersComponent implements OnInit {
         });
     }
 
-
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
 
     onEdit(row: any) {
         let id = row['_id'];
