@@ -120,7 +120,7 @@ export class NewOfferComponent implements OnInit, OnDestroy {
     onSave(form: NgForm) {
         const value = form.value;
         const client = this.clients.find(client => client._id == value.client);
-        const seller = this.sellers.find(seller => seller.value == value.seller);
+        const seller = this.sellers.find(seller => seller._id == value.seller);
         let totalPrice = null;
         let signedPrice = null;
 
