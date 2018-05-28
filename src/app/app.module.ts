@@ -78,6 +78,8 @@ import {StringReplace} from './shared/stringReplace.pipe';
 import { TaskDialogComponent } from './offers/task-dialog/task-dialog.component';
 import {SafeHtml} from "./pipes/safeHtml.pipe";
 import {CdkTableModule} from "@angular/cdk/table";
+import { CategoriesComponent } from './categories/categories.component';
+import { CategoryAddEdiDialogComponent } from './categories/category-add-edi-dialog/category-add-edi-dialog.component';
 
 
 @NgModule({
@@ -120,7 +122,9 @@ import {CdkTableModule} from "@angular/cdk/table";
         ContactPersonDialogComponent,
         StringReplace,
         TaskDialogComponent,
-        SafeHtml
+        SafeHtml,
+        CategoriesComponent,
+        CategoryAddEdiDialogComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -188,7 +192,7 @@ import {CdkTableModule} from "@angular/cdk/table";
         HttpLinkModule
     ],
     providers: [SharedService, TdLoadingService, DataService, DataNodeService, NgPipesModule, AuthService, AuthGuard, StringReplace],
-    entryComponents: [EditModuleDialogComponent, ChapterDialogComponent, NewSellerComponent, ModuleListDialogComponent, ChapterListDialogComponent, MediaBrowserComponent, PageListDialogComponent, PageEditDialogComponent, PriceAddEditDialogComponent, NewUserComponent, PdfDialogComponent, RteDialogComponent, ContactPersonDialogComponent, TaskDialogComponent],
+    entryComponents: [EditModuleDialogComponent, ChapterDialogComponent, NewSellerComponent, ModuleListDialogComponent, ChapterListDialogComponent, MediaBrowserComponent, PageListDialogComponent, PageEditDialogComponent, PriceAddEditDialogComponent, NewUserComponent, PdfDialogComponent, RteDialogComponent, ContactPersonDialogComponent, TaskDialogComponent, CategoryAddEdiDialogComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {

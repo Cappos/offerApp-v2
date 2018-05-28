@@ -1,0 +1,24 @@
+<div layout="row" layout-wrap layout-align="start center">
+  <div flex="60">
+    <h1 mat-dialog-title>New Category</h1>
+  </div>
+  <div flex="40" layout="column" layout-align="center end">
+    <div class="button-row" style="display: flex; align-items: flex-end; justify-content: flex-end; width: 230px;">
+      <button mat-raised-button (click)="onSave(f, id)">
+        <mat-icon mat-list-icon>done</mat-icon>
+        <span> Save</span>
+      </button>
+    </div>
+  </div>
+</div>
+<mat-dialog-content>
+  <form #f="ngForm">
+    <div layout="row" layout-wrap>
+      <div style="margin-top:20px;" flex="25" layout-padding>
+        <mat-input-container>
+          <input matInput placeholder="Name" [ngModel]="item?.name" name="name" required>
+        </mat-input-container>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

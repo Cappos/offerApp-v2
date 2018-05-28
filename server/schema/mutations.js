@@ -149,7 +149,29 @@ const mutation = new GraphQLObjectType({
                 tstamp: {type: GraphQLString}
             },
             resolve(parentValue, args) {
-                return (new Category(args)).save()
+                return Category.addCategory(args);
+            }
+        },
+        editCategory: {
+            type: CategoryType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+                name: {type: new GraphQLNonNull(GraphQLString)},
+                tstmp: {type: GraphQLString}
+            },
+            resolve(parentValue, args) {
+                return Category.updateCategory(args);
+            }
+        },
+        deleteCategory: {
+            type: CategoryType,
+            args: {id: {type: new GraphQLNonNull(GraphQLID)}},
+            resolve(parentValue, {id}) {
+                return Category.findOneAndUpdate({_id: id}, {
+                    $set: {
+                        deleted: true
+                    }
+                }, {new: true});
             }
         },
         addClient: {
