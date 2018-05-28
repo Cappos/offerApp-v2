@@ -1,109 +1,12 @@
-<div layout="row" layout-wrap layout-align="start center">
-    <div flex="60">
-        <h1 mat-dialog-title>Choose file</h1>
-    </div>
-    <div flex="40" layout="column" layout-align="center end">
-        <div class="button-row" style="display: flex; align-items: center; justify-content: space-around; width: 230px;">
-            <button mat-raised-button [mat-dialog-close]="clickedButton">
-                <mat-icon mat-list-icon>done</mat-icon>
-                <span> Open</span>
-            </button>
-            <button mat-raised-button (click)="closeDialog()">
-                <mat-icon mat-list-icon>close</mat-icon>
-                <span> Cancel</span>
-            </button>
-        </div>
-    </div>
-
-</div>
-
-<mat-dialog-content>
-    <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
-        <td-file-upload #fileMultipleUpload accept=".jpg, .jpeg, .png, .pdf" (select)="selectMultipleEvent($event)"
-                        (upload)="uploadMultipleEvent($event) " activeColor="warn" cancelColor="primary" multiple>
-            <mat-icon>file_upload</mat-icon>
-            <span>{{ fileMultipleUpload.files?.name || fileMultipleUpload.files?.length }}
-                      <span *ngIf="fileMultipleUpload.files?.length">files selected</span>
-                  </span>
-            <ng-template td-file-input-label>
-                <mat-icon>attach_file</mat-icon>
-                <span>Choose files...</span>
-            </ng-template>
-        </td-file-upload>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="createFolder()">
-                <mat-icon>create_new_folder</mat-icon>
-                <span>Create folder</span>
-            </button>
-            <button mat-menu-item [disabled]="!pasteEnable" (click)="onPasteItem()">
-                <mat-icon>content_paste</mat-icon>
-                <span>Paste</span>
-            </button>
-        </mat-menu>
-        <span class="mat-title">Media</span>
-        <ng-template let-path let-first="first" ngFor [ngForOf]="breadcrumbs">
-            <span *ngIf="!first">/</span>
-            <button mat-button (click)="onStepBack(path.id)">{{path.parentName}}</button>
-        </ng-template>
-    </div>
-    <mat-divider></mat-divider>
-    <mat-list>
-        <mat-list-item>
-            <span hide-xs flex="90" class=" mat-body-1 tc-grey-500">Name</span>
-            <span flex></span>
-            <span hide-xs flex="40" class=" mat-body-1 tc-grey-500">Owner</span>
-            <span hide-xs class="mat-sort-header" flex="30" layout="row" layout-align="center center"
-                  class="pad-left mat-body-1 tc-grey-500"></span>
-            <a hide-xs class="mat-sort-header" (click)="sortBy(sortKey)">
-              <span layout="row" layout-align="start center" flex>
-                <mat-icon class="mat-sort-icon">{{isASC(sortKey)? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
-              </span>
-            </a>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <ng-template let-item let-i="index" let-last="last" ngFor [ngForOf]="data | filterBy: userFilter">
-            <mat-list-item>
-                <button mat-button mat-line [class.clicked]="clickedButton?.id == item.id" style="text-align: left"
-                        (dblclick)="selectItem(item.id)" (contextmenu)="onRightClick($event, item.id)"
-                        (click)="selectedItem(item)">
-                    <span [matMenuTriggerFor]="editMenu" #actionMenu></span>
-                    <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
-                    <span> {{item.name}}</span>
-                </button>
-                <span flex></span>
-                <span hide-xs flex="30" class="pad-left">
-                {{item.owner}}
-              </span>
-                <span hide-xs flex="60" class="text-right mat-body-1 tc-grey-500 pad-right">
-                {{item.created_at}}
-              </span>
-
-            </mat-list-item>
-            <mat-divider *ngIf="!last"></mat-divider>
-        </ng-template>
-    </mat-list>
-    <ng-template [ngIf]="!data">
-        <div class="mat-padding" layout="row" layout-align="center center">
-            <h3>No data to display.</h3>
-        </div>
-    </ng-template>
-    <mat-divider></mat-divider>
-
-    <mat-menu #editMenu>
-        <button mat-menu-item (click)="onCutFile()">
-            <mat-icon>content_copy</mat-icon>
-            <span>Cut</span>
-        </button>
-        <button mat-menu-item (click)="onRenameFile()">
-            <mat-icon>mode_edit</mat-icon>
-            <span>Rename</span>
-        </button>
-        <button mat-menu-item (click)="onDeleteFile()">
-            <mat-icon>delete</mat-icon>
-            <span>Delete</span>
-        </button>
-    </mat-menu>
-</mat-dialog-content>
+<mat-card style="height: 100%; box-sizing: border-box; padding:0">
+    <file-explorer  [fileElements]="fileElements | async"
+                    [path]="currentPath"
+                    [canNavigateUp]="canNavigateUp"
+                    (folderAdded)="addFolder($event)"
+                    (elementRemoved)="removeElement($event)"
+                    (navigatedDown)="navigateToFolder($event)"
+                    (navigatedUp)="navigateUp()"
+                    (elementRenamed)="renameElement($event)"
+                    (elementMoved)="moveElement($event)">
+    </file-explorer>
+</mat-card>

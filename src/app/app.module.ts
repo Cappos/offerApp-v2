@@ -80,6 +80,8 @@ import {SafeHtml} from "./pipes/safeHtml.pipe";
 import {CdkTableModule} from "@angular/cdk/table";
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryAddEdiDialogComponent } from './categories/category-add-edi-dialog/category-add-edi-dialog.component';
+import {FileExplorerModule} from "./file-explorer/file-explorer.module";
+import {FileService} from "./service/file.service";
 
 
 @NgModule({
@@ -189,9 +191,10 @@ import { CategoryAddEdiDialogComponent } from './categories/category-add-edi-dia
         /** Apollo*/
         HttpClientModule,
         ApolloModule,
-        HttpLinkModule
+        HttpLinkModule,
+        FileExplorerModule
     ],
-    providers: [SharedService, TdLoadingService, DataService, DataNodeService, NgPipesModule, AuthService, AuthGuard, StringReplace],
+    providers: [SharedService, TdLoadingService, DataService, DataNodeService, NgPipesModule, AuthService, AuthGuard, StringReplace, FileService],
     entryComponents: [EditModuleDialogComponent, ChapterDialogComponent, NewSellerComponent, ModuleListDialogComponent, ChapterListDialogComponent, MediaBrowserComponent, PageListDialogComponent, PageEditDialogComponent, PriceAddEditDialogComponent, NewUserComponent, PdfDialogComponent, RteDialogComponent, ContactPersonDialogComponent, TaskDialogComponent, CategoryAddEdiDialogComponent],
     bootstrap: [AppComponent]
 })

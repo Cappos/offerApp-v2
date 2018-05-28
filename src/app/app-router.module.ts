@@ -23,6 +23,7 @@ import {LoginComponent} from "./auth/login/login.component";
 import {AuthGuard} from "./auth/auth-guard.service";
 import {NotFoundComponent} from "./error-handling/not-found/not-found.component";
 import {CategoriesComponent} from "./categories/categories.component";
+import {MediaBrowserComponent} from "./media-browser/media-browser.component";
 
 const appRoutes: Routes = [
     {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -54,6 +55,7 @@ const appRoutes: Routes = [
     {path: 'categories', component: CategoriesComponent, canActivate: [AuthGuard]},
     {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
     {path: 'login', component: LoginComponent},
+    {path: 'media', component: MediaBrowserComponent},
     {path: '404', component: NotFoundComponent},
     {path: '**', redirectTo: '/404'}
 ];

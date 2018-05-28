@@ -36,6 +36,8 @@
             <mat-divider mat-inset></mat-divider>
             <mat-list-item routerLinkActive="active" *ngIf="authService.isAdmin()"><mat-icon matListIcon>account_box</mat-icon><a matLine routerLink="users">Users</a></mat-list-item>
             <mat-divider mat-inset></mat-divider>
+            <mat-list-item routerLinkActive="active" *ngIf="authService.isAdmin()"><mat-icon matListIcon>account_box</mat-icon><a matLine routerLink="media">File Browser</a></mat-list-item>
+            <mat-divider mat-inset></mat-divider>
             <mat-list-item><mat-icon matListIcon>exit_to_app</mat-icon><a matLine (click)="onLogout()">Logout</a></mat-list-item>
             <mat-divider mat-inset></mat-divider>
         </mat-nav-list>
