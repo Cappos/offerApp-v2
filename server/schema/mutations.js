@@ -181,8 +181,7 @@ const mutation = new GraphQLObjectType({
                 address: {type: GraphQLString},
                 webSite: {type: GraphQLString},
                 tstmp: {type: GraphQLString},
-                contacts: {type: GraphQLJSON},
-                offers: {type: GraphQLID}
+                contacts: {type: GraphQLJSON}
             },
             resolve(parentValue, args) {
                 return Client.createClient(args);

@@ -38,7 +38,6 @@ export class NewClientComponent implements OnInit {
 
     onSave(form: NgForm) {
         const value = form.value;
-        const offers = this.offers.length ? this.offers : null;
         console.log(value);
 
         this.apollo.mutate({
@@ -47,8 +46,7 @@ export class NewClientComponent implements OnInit {
                 companyName: value.companyName,
                 address: value.address,
                 webSite: value.webSite,
-                contacts: this.persons,
-                offers: offers
+                contacts: this.persons
             },
 
             refetchQueries: [{

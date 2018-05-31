@@ -142,7 +142,7 @@ export class NewOfferComponent implements OnInit, OnDestroy {
                 bodytext: value.bodytext,
                 client: client._id,
                 contacts: this.selectedContactPersons,
-                seller: seller._id,
+                seller: seller ? seller._id : null,
                 groupsNew: !this.offersModules.length ? [] : this.offersModules,
                 files: this.files,
                 expDate: value.expDate,

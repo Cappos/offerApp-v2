@@ -75,7 +75,7 @@
                     <div style="margin-top:20px;" flex="15" layout-padding>
                         <mat-input-container>
                             <mat-select placeholder="Seller" floatPlaceholder="auto" [(ngModel)]="selectedSeller"
-                                        name="seller" [disabled]="!editMode">
+                                        name="seller" [disabled]="!editMode" required>
                                 <mat-option *ngFor="let seller of sellers" [value]="seller.value">
                                     {{seller.name}}
                                 </mat-option>

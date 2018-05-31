@@ -102,11 +102,11 @@ export class OfferComponent implements OnInit, OnDestroy {
                 }).valueChanges.take(1).subscribe(({data}) => {
                     this.item = _.cloneDeep(data.offer);
                     this.sellers = data.sealers; // Set seller data
-                    this.selectedSeller = this.item.sealer[0]._id;
+                    this.selectedSeller = this.item.sealer ? this.item.sealer[0]._id : '';
                     this.selectedClient = this.item.client[0]._id;
                     this.selectedContactPersons = this.item.contacts;
                     this.oldClient = data.offer.client[0]._id;
-                    this.oldSeller = data.offer.sealer[0]._id;
+                    this.oldSeller = data.offer.sealer ?  data.offer.sealer[0]._id : '';
                     this.offerNumber = data.offer.offerNumber;
                     this.internalHours = this.item.internalHours;
                     this.externalHours = this.item.externalHours;

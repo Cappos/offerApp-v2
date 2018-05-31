@@ -61,7 +61,7 @@ ClientSchema.statics.createClient = function (args) {
         address: args.address,
         webSite: args.webSite,
         contacts: [],
-        offers: args.offers
+        offers: []
     })).save().then(client => {
 
         for (let c in contacts) {
