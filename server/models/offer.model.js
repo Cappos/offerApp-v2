@@ -190,8 +190,11 @@ OfferSchema.statics.updateOffer = function (args) {
     const Module = mongoose.model('module');
     const Page = mongoose.model('page');
     const GroupsNew = args.groupsNew;
+    let version = args.version;
 
     if (args.oldClient !== args.client) {
+        version = 1; // reset version number
+
         // Unset offer client
         Client.findOneAndUpdate({_id: args.oldClient},
             {
@@ -219,7 +222,8 @@ OfferSchema.statics.updateOffer = function (args) {
                 externalHours: args.externalHours,
                 comments: args.comments,
                 files: args.files,
-                timeline: args.timeline
+                timeline: args.timeline,
+                version: version
             }
         }, {new: true}).then(offer => {
 

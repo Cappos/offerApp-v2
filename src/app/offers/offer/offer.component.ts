@@ -219,7 +219,8 @@ export class OfferComponent implements OnInit, OnDestroy {
                 internalHours: value.internalHours,
                 externalHours: value.externalHours,
                 comments: this.rteData,
-                timeline: this.timeline
+                timeline: this.timeline,
+                version: this.item.version
             },
             refetchQueries: [{
                 query: getOffer,

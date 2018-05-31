@@ -22,7 +22,8 @@ export default gql`
     $internalHours: Float,
     $externalHours: Float,
     $comments: String,
-    $timeline: JSON) {
+    $timeline: JSON,
+    $version: Int) {
         editOffer(
             id: $id,
             offerTitle: $offerTitle,
@@ -43,7 +44,8 @@ export default gql`
             internalHours: $internalHours,
             externalHours: $externalHours
             comments: $comments,
-            timeline: $timeline){
+            timeline: $timeline,
+            version: $version){
             _id,
             offerTitle
         }
